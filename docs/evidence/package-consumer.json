@@ -18,8 +18,8 @@
   "inputUnchanged": true,
   "tgz": {
     "name": "tracesharegate-0.1.0.tgz",
-    "bytes": 262830,
-    "sha256": "c3d8b3993e63cb926127b77f1002c60dfb1f169e8eac6188eef48f80478f5243"
+    "bytes": 371306,
+    "sha256": "56ed585522d9092faf12d81007a9f9dabfa738a719bd7648ab874071f9be2d1e"
   },
   "node": "26.9.0",
   "os": "darwin",

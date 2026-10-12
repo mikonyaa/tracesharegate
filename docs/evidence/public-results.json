@@ -1,0 +1,59 @@
+{
+  "repositoryId": 1416146616,
+  "version": "0.1.0",
+  "releaseURL": "https://github.com/mikonyaa/tracesharegate/releases/tag/v0.1.0",
+  "releaseCommit": "9c88a2be964a772c9cf8666b0ac4ac4d44476fd3",
+  "CI": {
+    "runId": "38310948028",
+    "url": "https://github.com/mikonyaa/tracesharegate/actions/runs/38310948028",
+    "event": "push",
+    "workflow": "CI",
+    "headSha": "9c88a2be964a772c9cf8666b0ac4ac4d44476fd3",
+    "ref": "refs/heads/main"
+  },
+  "pageURL": "https://mikonyaa.github.io/tracesharegate/",
+  "anonymousSourceRead": true,
+  "anonymousDownloads": true,
+  "assetHashesMatched": true,
+  "packageSHA256": "56ed585522d9092faf12d81007a9f9dabfa738a719bd7648ab874071f9be2d1e",
+  "packageBytes": 371306,
+  "consumerOutsideCheckout": true,
+  "devDependencies": false,
+  "browserRequired": false,
+  "runtimeNetworkAndChildrenBlocked": true,
+  "actions": 33,
+  "errors": 3,
+  "canaryMatches": 0,
+  "inputUnchanged": true,
+  "literalWithoutFile": "not-performed",
+  "literalWithFile": "performed",
+  "publishedExampleVerified": true,
+  "pagesBytesMatchRelease": true,
+  "liveControls": [
+    {
+      "width": 1440,
+      "hardRefresh": true,
+      "search": true,
+      "filter": true,
+      "copy": true,
+      "download": true,
+      "overflow": false,
+      "externalRequests": 0,
+      "sourceLeakage": false
+    },
+    {
+      "width": 390,
+      "hardRefresh": true,
+      "search": true,
+      "filter": true,
+      "copy": true,
+      "download": true,
+      "overflow": false,
+      "externalRequests": 0,
+      "sourceLeakage": false
+    }
+  ],
+  "node": "26.9.0",
+  "os": "darwin",
+  "arch": "arm64"
+}
