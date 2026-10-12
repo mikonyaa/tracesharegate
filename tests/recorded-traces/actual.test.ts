@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFile, writeFile, mkdtemp } from "node:fs/promises";
+import { readFile, writeFile, mkdtemp, mkdir } from "node:fs/promises";
 import path from "node:path";
 import { tmpdir } from "node:os";
 import { reduce } from "../../src/report/process.js";
@@ -96,6 +96,7 @@ test("canary exists in original action, console/error, network, DOM, screenshot 
         .subarray(0, 8)
         .equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])),
   );
+  await mkdir("output/playwright", { recursive: true });
   await writeFile(
     "output/playwright/original-synthetic-canary.png",
     image.data,
