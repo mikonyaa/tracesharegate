@@ -1,0 +1,11 @@
+{
+  "playwright": "1.63.0",
+  "schema": 9,
+  "openedOriginal": true,
+  "observations": [
+    "runner assertion visible",
+    "fill/click operations visible",
+    "private original snapshot available"
+  ],
+  "screenshot": "output/playwright/original-trace-viewer.png"
+}

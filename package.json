@@ -1,0 +1,62 @@
+{
+  "name": "tracesharegate",
+  "version": "0.1.0",
+  "description": "Export minimal debugging reports from Playwright traces with an explicit omission manifest.",
+  "type": "module",
+  "bin": {
+    "tracesharegate": "dist/cli.js"
+  },
+  "exports": "./dist/index.js",
+  "files": [
+    "dist",
+    "fixtures/synthetic/*.zip",
+    "fixtures/provenance/*.json",
+    "schemas/*.json",
+    "docs/*.md",
+    "licenses/*.txt",
+    "README.md",
+    "LICENSE",
+    "NOTICE",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikonyaa/tracesharegate.git"
+  },
+  "author": "Meiram Bakhytzhan",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src tests scripts",
+    "build": "node scripts/build.mjs",
+    "test:unit": "node --test --import tsx tests/unit/*.test.ts",
+    "test:recorded": "node scripts/record-fixtures.mjs && node --test --import tsx tests/recorded-traces/*.test.ts",
+    "test:adversarial": "node --test --import tsx tests/adversarial/*.test.ts",
+    "test:ui": "node --import tsx scripts/ui-qa.mjs",
+    "test:package": "node scripts/verify-package.mjs",
+    "build:site": "node scripts/build-site.mjs",
+    "prepack": "npm run build",
+    "test:trace-viewer": "node scripts/trace-viewer-qa.mjs"
+  },
+  "dependencies": {
+    "ajv": "8.20.0",
+    "yauzl": "3.4.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@types/node": "26.6.5",
+    "@types/yauzl": "3.4.0",
+    "@types/yazl": "3.3.1",
+    "esbuild": "0.28.2",
+    "eslint": "10.12.0",
+    "prettier": "3.9.10",
+    "tsx": "4.23.15",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.71.2",
+    "yazl": "3.3.1"
+  },
+  "types": "./dist/index.d.ts"
+}

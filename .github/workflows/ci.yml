@@ -1,0 +1,52 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  validate:
+    name: Validate Node ${{ matrix.node }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [22, 24]
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run build
+      - run: npm run test:unit
+      - run: npm run test:adversarial
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:recorded
+      - run: npm run test:trace-viewer
+      - run: npm run test:ui
+      - run: npm run test:package
+      - run: npm run build:site
+      - run: node scripts/prepare-artifacts.mjs
+      - run: node scripts/audit-public.mjs
+      - name: Upload exact tested Release assets
+        if: matrix.node == 24 && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: release-candidate
+          path: |
+            .work/release-upload/tracesharegate-0.1.0.tgz
+            .work/release-upload/tracesharegate-example-0.1.0.zip
+            .work/release-upload/release-manifest.json
+            .work/release-upload/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 7

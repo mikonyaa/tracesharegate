@@ -1,0 +1,45 @@
+{
+  "browser": "153.0.8010.12",
+  "actualReport": true,
+  "viewports": [
+    {
+      "width": 1440,
+      "offlineFile": true,
+      "networkRequests": 0,
+      "search": true,
+      "statusAndErrorFilters": true,
+      "keyboard": true,
+      "copy": true,
+      "omissionSnapshotDownload": true,
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "offlineFile": true,
+      "networkRequests": 0,
+      "search": true,
+      "statusAndErrorFilters": true,
+      "keyboard": true,
+      "copy": true,
+      "omissionSnapshotDownload": true,
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "offlineFile": true,
+      "networkRequests": 0,
+      "search": true,
+      "statusAndErrorFilters": true,
+      "keyboard": true,
+      "copy": true,
+      "omissionSnapshotDownload": true,
+      "overflow": false
+    }
+  ],
+  "unknownBanner": true,
+  "emptyState": true,
+  "longErrors": true,
+  "importedMarkupExecuted": false,
+  "largeActions": 5000,
+  "pagination": true
+}

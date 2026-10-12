@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TraceShareGate policy",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "enum": ["minimal-v1"]
+    },
+    "version": {
+      "enum": [1]
+    },
+    "retained": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 8192
+      },
+      "maxItems": 30
+    },
+    "omitted": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "arguments-and-results",
+          "test-and-step-titles",
+          "console-and-stdio",
+          "dom-and-aria",
+          "images-and-video",
+          "network",
+          "cookies-and-storage",
+          "source-and-stacks",
+          "attachments",
+          "arbitrary-resources"
+        ]
+      },
+      "maxItems": 20
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "known-literal",
+          "literal-uri",
+          "literal-json",
+          "literal-nfc",
+          "url",
+          "home-path",
+          "absolute-path",
+          "email",
+          "bearer",
+          "jwt",
+          "credential-assignment",
+          "synthetic-canary",
+          "ansi",
+          "control",
+          "error-context",
+          "oversize-string"
+        ]
+      },
+      "maxItems": 30
+    }
+  },
+  "required": ["id", "version", "retained", "omitted", "rules"]
+}

@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-13",
+  "input": "own synthetic assertion trace",
+  "baseline": {
+    "name": "pw-sanitizer",
+    "version": "0.5.0",
+    "commit": "91765956ddd8d8622c15b8e6559adc7efdf2689e",
+    "declaredLicense": "MIT in package.json; no standalone license file found at examined commit",
+    "configuration": "Explicit synthetic-canary valuePattern; copy mode; screenshot redaction off",
+    "redactions": 35,
+    "bytes": 171953,
+    "inventory": {
+      "physicalEntries": 22,
+      "sourceEntries": 1,
+      "imageEntries": 10,
+      "networkStreams": 2,
+      "domEvents": 16
+    }
+  },
+  "original": {
+    "sha256": "508e3bc59b8c7fad4f2644bd905d0507e0194fb16f7825616139819a121c5698",
+    "bytes": 172784,
+    "inventory": {
+      "physicalEntries": 21,
+      "sourceEntries": 1,
+      "imageEntries": 10,
+      "networkStreams": 2,
+      "domEvents": 16
+    }
+  },
+  "tracesharegate": {
+    "actions": 33,
+    "errors": 3,
+    "bytes": {
+      "report.json": 16233,
+      "report.html": 42711,
+      "manifest.json": 12262
+    },
+    "embeddedSourceOrImages": 0,
+    "resourcePayloads": 0,
+    "processingStatus": "complete"
+  },
+  "usefulDifference": "A derived allowlist report with per-entry disposition, declared versus actual bytes, resource-reference counts and explicit unknown coverage.",
+  "lostContext": "Selectors, expected/received values, DOM replay, images, network/source context, original titles and globally aligned timing. Use the original privately for full analysis.",
+  "interpretation": "One synthetic sample and this explicit configuration; not a universal security or performance comparison."
+}

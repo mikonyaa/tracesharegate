@@ -1,0 +1,33 @@
+{
+  "playwright": "1.63.0",
+  "schema": 9,
+  "browser": "153.0.8010.12",
+  "runnerAssertions": true,
+  "capture": {
+    "screenshots": true,
+    "snapshots": true,
+    "sources": true,
+    "attachments": true
+  },
+  "synthetic": true,
+  "fixtures": [
+    {
+      "id": "assertion",
+      "sha256": "508e3bc59b8c7fad4f2644bd905d0507e0194fb16f7825616139819a121c5698",
+      "bytes": 172784,
+      "expectedFailure": "toHaveText"
+    },
+    {
+      "id": "timeout",
+      "sha256": "3176061ee07bc5f31e85f0cbeb96d8a9f6f6111b14088b60e0bb8857b1cf984f",
+      "bytes": 59997,
+      "expectedFailure": "Timeout"
+    },
+    {
+      "id": "navigation",
+      "sha256": "7ff9d11b04c2dc9cad5d3b2dd906464d6382d3d479609d0b35cc2beb361c0f1a",
+      "bytes": 25481,
+      "expectedFailure": "net::ERR"
+    }
+  ]
+}

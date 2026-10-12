@@ -1,0 +1,12 @@
+{
+  "adapter": "playwright-1.63.0-v9",
+  "adapterVersion": "1",
+  "playwright": "1.63.0",
+  "schemaFamily": 9,
+  "tag": "v1.63.0",
+  "sourceCommit": "1b025d7e20a026371cd5f98ba0cdce48892737c8",
+  "sourceTypes": "https://github.com/microsoft/playwright/blob/v1.63.0/packages/isomorphic/trace/versions/traceV9.ts",
+  "runnerRecorder": "https://github.com/microsoft/playwright/blob/v1.63.0/packages/playwright/src/worker/testTracing.ts",
+  "browserRecorder": "https://github.com/microsoft/playwright/blob/v1.63.0/packages/playwright-core/src/server/trace/recorder/tracing.ts",
+  "eventKinds": ["context-options", "before", "after", "action", "input", "log", "event", "console", "resource-snapshot", "frame-snapshot", "screencast-frame", "video", "screenshot", "aria-snapshot", "stdout", "stderr", "error"]
+}

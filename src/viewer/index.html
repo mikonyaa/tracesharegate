@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="__CSP__" />
+    <title>TraceShareGate · Review report</title>
+    <style>
+      __CSS__
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <span class="mark">T / G</span>
+        <div>
+          <h1>TraceShareGate</h1>
+          <p>A smaller debugging artifact. Review it before sharing.</p>
+        </div>
+      </div>
+      <div class="version">minimal-v1 <span>derived report</span></div>
+    </header>
+    <div id="banner" role="status"></div>
+    <main>
+      <section class="timeline-panel" aria-label="Action timeline">
+        <div class="section-label">
+          01 / ACTION TIMELINE <span id="action-count"></span>
+        </div>
+        <div class="filters">
+          <label class="search"
+            >Search retained text<input
+              id="search"
+              type="search"
+              placeholder="Operation or sanitized error"
+              autocomplete="off" /></label
+          ><label
+            >Status<select id="status" aria-label="Status">
+              <option value="all">All statuses</option>
+              <option>failed</option>
+              <option>passed</option>
+              <option>incomplete</option>
+              <option>unknown</option>
+            </select></label
+          ><label
+            >Type<select id="kind" aria-label="Type">
+              <option value="all">Actions + errors</option>
+              <option value="actions">Actions</option>
+              <option value="errors">Errors</option>
+            </select></label
+          >
+        </div>
+        <div
+          id="timeline"
+          tabindex="0"
+          aria-label="Timeline entries; use arrow keys to navigate"
+        ></div>
+      </section>
+      <aside>
+        <div class="section-label">02 / RETAINED DETAILS</div>
+        <section id="details" aria-live="polite"></section>
+        <div class="detail-actions">
+          <button id="copy">Copy sanitized text</button
+          ><button id="download">Download omission manifest</button>
+        </div>
+        <p id="copy-status" role="status"></p>
+        <p class="manifest-note">
+          The embedded omission snapshot includes the JSON hash. Final JSON and
+          HTML hashes are in the sibling manifest.json.
+        </p>
+        <details open>
+          <summary>Processing coverage</summary>
+          <div id="coverage"></div>
+        </details>
+        <details>
+          <summary>Retained fields</summary>
+          <div id="retained"></div>
+        </details>
+        <details open>
+          <summary>Omissions</summary>
+          <div id="omissions"></div>
+        </details>
+        <section class="reminder">
+          <strong>Review reminder</strong>
+          <p>
+            Read every retained error. Unknown sensitive text may remain.
+            Reduction is not a privacy certificate.
+          </p>
+          <p>
+            Excluded images were not OCR scanned. Use the original trace
+            privately for full context.
+          </p>
+        </section>
+      </aside>
+    </main>
+    <footer>
+      Local artifact · No uploads · Stream clocks stay separate · Original trace
+      unchanged
+    </footer>
+    <script id="report-data" type="application/json">
+      __DATA__
+    </script>
+    <script>
+      __JS__;
+    </script>
+  </body>
+</html>

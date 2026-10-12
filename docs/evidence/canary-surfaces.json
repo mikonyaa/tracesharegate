@@ -1,0 +1,17 @@
+{
+  "synthetic": true,
+  "originalSHA256": "508e3bc59b8c7fad4f2644bd905d0507e0194fb16f7825616139819a121c5698",
+  "surfaces": {
+    "actionArguments": true,
+    "consoleAndError": true,
+    "networkBody": true,
+    "dom": true,
+    "screenshot": {
+      "pngPresent": true,
+      "visibleText": "Manually inspected; image exclusion is not plaintext scanning."
+    },
+    "source": true
+  },
+  "retainedCanaryMatches": 0,
+  "originalUnchanged": true
+}

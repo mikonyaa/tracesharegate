@@ -1,0 +1,10 @@
+{
+  "scenario": "own actual assertion trace",
+  "os": "darwin",
+  "arch": "arm64",
+  "node": "26.9.0",
+  "wallMs": 112,
+  "maxRssBytes": 81084416,
+  "workerHeapBudgetMiB": 256,
+  "meaning": "One observed synthetic fixture run, not a general performance benchmark or strict RSS cap."
+}

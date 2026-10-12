@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.work/
+output/
+site/
+local-policy/
+*.tgz
+.DS_Store

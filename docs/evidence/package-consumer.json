@@ -1,0 +1,27 @@
+{
+  "version": "0.1.0",
+  "consumerOutsideCheckout": true,
+  "devDependenciesInstalled": false,
+  "browserInstalled": false,
+  "runtimeNetworkAndChildrenBlocked": true,
+  "commands": [
+    "doctor",
+    "demo",
+    "report actual packaged synthetic trace",
+    "verify without literals",
+    "verify with literals"
+  ],
+  "actions": 33,
+  "errors": 3,
+  "literalRecheckWithout": "not-performed",
+  "literalRecheckWith": "performed",
+  "inputUnchanged": true,
+  "tgz": {
+    "name": "tracesharegate-0.1.0.tgz",
+    "bytes": 262830,
+    "sha256": "c3d8b3993e63cb926127b77f1002c60dfb1f169e8eac6188eef48f80478f5243"
+  },
+  "node": "26.9.0",
+  "os": "darwin",
+  "arch": "arm64"
+}

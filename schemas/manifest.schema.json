@@ -1,0 +1,577 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TraceShareGate manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "enum": [1]
+    },
+    "tool": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "enum": ["tracesharegate"]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^0\\.[0-9]+\\.[0-9]+$"
+        }
+      },
+      "required": ["name", "version"]
+    },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": ["sha256", "bytes"]
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 8192
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "fingerprint": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": ["id", "version", "fingerprint"]
+    },
+    "processingStatus": {
+      "enum": ["complete", "incomplete", "unsupported"]
+    },
+    "needsReview": {
+      "enum": [true]
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "archiveInventory": {
+          "enum": ["complete"]
+        },
+        "recognizedSchema": {
+          "enum": ["complete", "incomplete", "unsupported"]
+        },
+        "processedRetainedFields": {
+          "enum": ["complete", "incomplete"]
+        },
+        "patternMatching": {
+          "enum": ["bounded-built-ins"]
+        },
+        "literalCheck": {
+          "enum": ["performed", "not-performed"]
+        },
+        "events": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "streams": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "assertionScope": {
+          "enum": ["runner-observations", "browser-only", "unknown"]
+        },
+        "issues": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "enum": [
+                  "unsupported-event-structure",
+                  "unknown-entry-category",
+                  "invalid-event-structure",
+                  "unsupported-trace-metadata",
+                  "unknown-origin",
+                  "duplicate-context-metadata",
+                  "missing-context-metadata",
+                  "unverified-network-scope",
+                  "unknown-network-event",
+                  "missing-trace-stream",
+                  "unresolved-resource-reference",
+                  "unknown-event-kind",
+                  "unknown-schema-field",
+                  "unknown-error-field",
+                  "invalid-call-id",
+                  "unknown-operation",
+                  "invalid-start-time",
+                  "duplicate-before",
+                  "duplicate-after",
+                  "orphan-after",
+                  "invalid-duration",
+                  "invalid-error-structure",
+                  "unfinished-action",
+                  "unverified-parent"
+                ]
+              },
+              "entryId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^entry-[1-9][0-9]{0,6}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "eventIndex": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "schemaPath": {
+                "enum": [
+                  "events",
+                  "events[]",
+                  "archive.entries[]",
+                  "events[].context-options",
+                  "events[].origin",
+                  "events[].operation",
+                  "events[].resourceReference",
+                  "actions[].parentId"
+                ]
+              },
+              "count": {
+                "type": "integer",
+                "minimum": 1
+              }
+            },
+            "required": ["code", "entryId", "eventIndex", "schemaPath", "count"]
+          },
+          "maxItems": 20000
+        }
+      },
+      "required": [
+        "archiveInventory",
+        "recognizedSchema",
+        "processedRetainedFields",
+        "patternMatching",
+        "literalCheck",
+        "events",
+        "streams",
+        "assertionScope",
+        "issues"
+      ]
+    },
+    "redactionSummary": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "ruleId": {
+            "enum": [
+              "known-literal",
+              "literal-uri",
+              "literal-json",
+              "literal-nfc",
+              "url",
+              "home-path",
+              "absolute-path",
+              "email",
+              "bearer",
+              "jwt",
+              "credential-assignment",
+              "synthetic-canary",
+              "ansi",
+              "control",
+              "error-context",
+              "oversize-string"
+            ]
+          },
+          "field": {
+            "enum": ["errors[].name", "errors[].message"]
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": ["ruleId", "field", "count"]
+      },
+      "maxItems": 100
+    },
+    "omissionSummary": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "category": {
+            "enum": [
+              "arguments-and-results",
+              "test-and-step-titles",
+              "console-and-stdio",
+              "dom-and-aria",
+              "images-and-video",
+              "network",
+              "cookies-and-storage",
+              "source-and-stacks",
+              "attachments",
+              "arbitrary-resources"
+            ]
+          },
+          "eventCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "entryCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "resourceReferenceCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "reason": {
+            "enum": ["excluded-by-minimal-v1"]
+          }
+        },
+        "required": [
+          "category",
+          "eventCount",
+          "entryCount",
+          "resourceReferenceCount",
+          "reason"
+        ]
+      },
+      "maxItems": 20
+    },
+    "parser": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "enum": ["playwright-1.63.0-v9"]
+        },
+        "version": {
+          "enum": ["1"]
+        },
+        "playwright": {
+          "enum": ["1.63.0"]
+        },
+        "traceVersion": {
+          "enum": [9]
+        },
+        "sourceCommit": {
+          "enum": ["1b025d7e20a026371cd5f98ba0cdce48892737c8"]
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "playwright",
+        "traceVersion",
+        "sourceCommit"
+      ]
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^entry-[1-9][0-9]{0,6}$"
+          },
+          "category": {
+            "enum": [
+              "arguments-and-results",
+              "test-and-step-titles",
+              "console-and-stdio",
+              "dom-and-aria",
+              "images-and-video",
+              "network",
+              "cookies-and-storage",
+              "source-and-stacks",
+              "attachments",
+              "arbitrary-resources",
+              "trace-stream",
+              "network-stream",
+              "unknown"
+            ]
+          },
+          "disposition": {
+            "enum": ["retained-derived", "omitted", "unknown"]
+          },
+          "reason": {
+            "enum": [
+              "unrecognized-entry-category",
+              "excluded-by-policy",
+              "allowlisted-derived-fields",
+              "unsupported-stream"
+            ]
+          },
+          "declaredCompressedBytes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "declaredUncompressedBytes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "actualProcessedBytes": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "contentsInspected": {
+            "type": "boolean"
+          },
+          "retainedFieldPaths": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "contexts[]",
+                "actions[]",
+                "errors[]",
+                "contexts[].id",
+                "contexts[].lane",
+                "contexts[].origin",
+                "actions[].id",
+                "actions[].contextId",
+                "actions[].operation",
+                "actions[].startMs",
+                "actions[].endMs",
+                "actions[].durationMs",
+                "actions[].outcome",
+                "actions[].parentId",
+                "actions[].errorIds",
+                "errors[].message",
+                "errors[].name",
+                "errors[].eventIndex",
+                "coverage",
+                "counts"
+              ]
+            },
+            "maxItems": 30
+          }
+        },
+        "required": [
+          "id",
+          "category",
+          "disposition",
+          "reason",
+          "declaredCompressedBytes",
+          "declaredUncompressedBytes",
+          "actualProcessedBytes",
+          "contentsInspected",
+          "retainedFieldPaths"
+        ]
+      },
+      "maxItems": 20000
+    },
+    "resources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "entryId": {
+            "type": "string",
+            "pattern": "^entry-[1-9][0-9]{0,6}$"
+          },
+          "category": {
+            "enum": [
+              "arguments-and-results",
+              "test-and-step-titles",
+              "console-and-stdio",
+              "dom-and-aria",
+              "images-and-video",
+              "network",
+              "cookies-and-storage",
+              "source-and-stacks",
+              "attachments",
+              "arbitrary-resources"
+            ]
+          },
+          "references": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": ["entryId", "category", "references"]
+      },
+      "maxItems": 200000
+    },
+    "retainedFieldPaths": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "contexts[]",
+          "actions[]",
+          "errors[]",
+          "contexts[].id",
+          "contexts[].lane",
+          "contexts[].origin",
+          "actions[].id",
+          "actions[].contextId",
+          "actions[].operation",
+          "actions[].startMs",
+          "actions[].endMs",
+          "actions[].durationMs",
+          "actions[].outcome",
+          "actions[].parentId",
+          "actions[].errorIds",
+          "errors[].message",
+          "errors[].name",
+          "errors[].eventIndex",
+          "coverage",
+          "counts"
+        ]
+      },
+      "maxItems": 30
+    },
+    "unsupportedStructures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "enum": [
+              "unsupported-event-structure",
+              "unknown-entry-category",
+              "invalid-event-structure",
+              "unsupported-trace-metadata",
+              "unknown-origin",
+              "duplicate-context-metadata",
+              "missing-context-metadata",
+              "unverified-network-scope",
+              "unknown-network-event",
+              "missing-trace-stream",
+              "unresolved-resource-reference",
+              "unknown-event-kind",
+              "unknown-schema-field",
+              "unknown-error-field",
+              "invalid-call-id",
+              "unknown-operation",
+              "invalid-start-time",
+              "duplicate-before",
+              "duplicate-after",
+              "orphan-after",
+              "invalid-duration",
+              "invalid-error-structure",
+              "unfinished-action",
+              "unverified-parent"
+            ]
+          },
+          "entryId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^entry-[1-9][0-9]{0,6}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "eventIndex": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "schemaPath": {
+            "enum": [
+              "events",
+              "events[]",
+              "archive.entries[]",
+              "events[].context-options",
+              "events[].origin",
+              "events[].operation",
+              "events[].resourceReference",
+              "actions[].parentId"
+            ]
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": ["code", "entryId", "eventIndex", "schemaPath", "count"]
+      },
+      "maxItems": 20000
+    },
+    "outputArtifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "enum": ["report.json", "report.html"]
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": ["name", "sha256", "bytes"]
+      },
+      "maxItems": 2
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "tool",
+    "input",
+    "policy",
+    "processingStatus",
+    "needsReview",
+    "coverage",
+    "redactionSummary",
+    "omissionSummary",
+    "parser",
+    "entries",
+    "resources",
+    "retainedFieldPaths",
+    "unsupportedStructures",
+    "outputArtifacts"
+  ]
+}

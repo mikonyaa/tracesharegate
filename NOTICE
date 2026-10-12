@@ -1,0 +1,11 @@
+TraceShareGate is independently implemented and distributed under the MIT license.
+Its adapter vocabulary and format knowledge derive from the released Playwright
+v1.63.0 trace types and recorders, Copyright Microsoft Corporation, Apache-2.0.
+See licenses/playwright-APACHE-2.0.txt and docs/format-support.md for pinned sources.
+No competitor implementation code or competitor fixture media is included.
+The fixture app, tests, traces, screenshots and reports were created for this
+project with synthetic data and are distributed under this project's MIT license.
+Playwright is a development dependency, not a CLI runtime dependency.
+Runtime npm dependencies retain their respective package licenses:
+yauzl MIT; ajv MIT; fast-deep-equal MIT; fast-uri BSD-3-Clause;
+json-schema-traverse MIT; require-from-string MIT; pend MIT.
