@@ -1,0 +1,457 @@
+{
+  "schemaVersion": 1,
+  "tool": {
+    "name": "tracesharegate",
+    "version": "0.1.0"
+  },
+  "adapter": {
+    "id": "playwright-1.63.0-v9",
+    "version": "1",
+    "playwright": "1.63.0",
+    "traceVersion": 9,
+    "sourceCommit": "1b025d7e20a026371cd5f98ba0cdce48892737c8"
+  },
+  "input": {
+    "sha256": "1c49ada40658d6bbc98abc735a5e464ff983c1c34042e81ae6b927486e9b7316",
+    "bytes": 5621
+  },
+  "policy": {
+    "id": "minimal-v1",
+    "version": 1,
+    "fingerprint": "9d39ec57f6893725f9bb62187d7d525ec4c52e8ae752797313b7e8593b383108"
+  },
+  "processingStatus": "complete",
+  "needsReview": true,
+  "coverage": {
+    "archiveInventory": "complete",
+    "recognizedSchema": "complete",
+    "processedRetainedFields": "complete",
+    "patternMatching": "bounded-built-ins",
+    "literalCheck": "not-performed",
+    "events": 48,
+    "streams": 3,
+    "assertionScope": "runner-observations",
+    "issues": []
+  },
+  "contexts": [
+    {
+      "id": "context-1",
+      "lane": "lane-1",
+      "origin": "runner",
+      "clock": "stream-relative",
+      "assertionObservations": "recorded"
+    },
+    {
+      "id": "context-2",
+      "lane": "lane-2",
+      "origin": "browser",
+      "clock": "stream-relative",
+      "assertionObservations": "out-of-scope"
+    },
+    {
+      "id": "context-3",
+      "lane": "lane-3",
+      "origin": "browser",
+      "clock": "stream-relative",
+      "assertionObservations": "out-of-scope"
+    }
+  ],
+  "actions": [
+    {
+      "id": "action-1",
+      "contextId": "context-1",
+      "lane": "lane-1",
+      "operation": "Test hook",
+      "operationKnown": true,
+      "startMs": 0,
+      "endMs": 2485.013,
+      "durationMs": 2485.013,
+      "outcome": "passed",
+      "parentId": null,
+      "errorIds": [],
+      "eventIndex": 2
+    },
+    {
+      "id": "action-2",
+      "contextId": "context-1",
+      "lane": "lane-1",
+      "operation": "Test hook",
+      "operationKnown": true,
+      "startMs": 0.184,
+      "endMs": 2484.89,
+      "durationMs": 2484.706,
+      "outcome": "passed",
+      "parentId": "action-1",
+      "errorIds": [],
+      "eventIndex": 3
+    },
+    {
+      "id": "action-3",
+      "contextId": "context-1",
+      "lane": "lane-1",
+      "operation": "Test fixture",
+      "operationKnown": true,
+      "startMs": 7.956,
+      "endMs": 2399.326,
+      "durationMs": 2391.37,
+      "outcome": "passed",
+      "parentId": "action-2",
+      "errorIds": [],
+      "eventIndex": 4
+    },
+    {
+      "id": "action-4",
+      "contextId": "context-1",
+      "lane": "lane-1",
+      "operation": "Browser API step",
+      "operationKnown": true,
+      "startMs": 9.905,
+      "endMs": 2399.278,
+      "durationMs": 2389.373,
+      "outcome": "passed",
+      "parentId": "action-3",
+      "errorIds": [],
+      "eventIndex": 5
+    },
+    {
+      "id": "action-5",
+      "contextId": "context-1",
+      "lane": "lane-1",
+      "operation": "Test fixture",
+      "operationKnown": true,
+      "startMs": 2399.854,
+      "endMs": 2410.244,
+      "durationMs": 10.39,
+      "outcome": "passed",
+      "parentId": "action-2",
+      "errorIds": [],
+      "eventIndex": 8
+    },
+    {
+      "id": "action-6",
+      "contextId": "context-1",
+      "lane": "lane-1",
+      "operation": "Browser API step",
+      "operationKnown": true,
+      "startMs": 2400.657,
+      "endMs": 2405.814,
+      "durationMs": 5.157,
+      "outcome": "passed",
+      "parentId": "action-5",
+      "errorIds": [],
+      "eventIndex": 9
+    },
+    {
+      "id": "action-7",
+      "contextId": "context-1",
+      "lane": "lane-1",
+      "operation": "Test fixture",
+      "operationKnown": true,
+      "startMs": 2410.51,
+      "endMs": 2467.534,
+      "durationMs": 57.024,
+      "outcome": "passed",
+      "parentId": "action-2",
+      "errorIds": [],
+      "eventIndex": 12
+    },
+    {
+      "id": "action-8",
+      "contextId": "context-1",
+      "lane": "lane-1",
+      "operation": "Browser API step",
+      "operationKnown": true,
+      "startMs": 2412.02,
+      "endMs": 2467.514,
+      "durationMs": 55.494,
+      "outcome": "passed",
+      "parentId": "action-7",
+      "errorIds": [],
+      "eventIndex": 13
+    },
+    {
+      "id": "action-9",
+      "contextId": "context-1",
+      "lane": "lane-1",
+      "operation": "Browser API step",
+      "operationKnown": true,
+      "startMs": 2468.099,
+      "endMs": 2484.802,
+      "durationMs": 16.703,
+      "outcome": "passed",
+      "parentId": "action-2",
+      "errorIds": [],
+      "eventIndex": 16
+    },
+    {
+      "id": "action-10",
+      "contextId": "context-1",
+      "lane": "lane-1",
+      "operation": "Assertion",
+      "operationKnown": true,
+      "startMs": 2486.451,
+      "endMs": 2487.09,
+      "durationMs": 0.639,
+      "outcome": "failed",
+      "parentId": null,
+      "errorIds": [
+        "error-1"
+      ],
+      "eventIndex": 20
+    },
+    {
+      "id": "action-11",
+      "contextId": "context-1",
+      "lane": "lane-1",
+      "operation": "Test hook",
+      "operationKnown": true,
+      "startMs": 2487.269,
+      "endMs": 2518.139,
+      "durationMs": 30.87,
+      "outcome": "passed",
+      "parentId": null,
+      "errorIds": [],
+      "eventIndex": 23
+    },
+    {
+      "id": "action-12",
+      "contextId": "context-1",
+      "lane": "lane-1",
+      "operation": "Test fixture",
+      "operationKnown": true,
+      "startMs": 2487.714,
+      "endMs": 2487.783,
+      "durationMs": 0.069,
+      "outcome": "passed",
+      "parentId": "action-11",
+      "errorIds": [],
+      "eventIndex": 24
+    },
+    {
+      "id": "action-13",
+      "contextId": "context-1",
+      "lane": "lane-1",
+      "operation": "Test fixture",
+      "operationKnown": true,
+      "startMs": 2487.866,
+      "endMs": 2512.675,
+      "durationMs": 24.809,
+      "outcome": "passed",
+      "parentId": "action-11",
+      "errorIds": [],
+      "eventIndex": 26
+    },
+    {
+      "id": "action-14",
+      "contextId": "context-1",
+      "lane": "lane-1",
+      "operation": "Browser API step",
+      "operationKnown": true,
+      "startMs": 2509.13,
+      "endMs": 2512.654,
+      "durationMs": 3.524,
+      "outcome": "passed",
+      "parentId": "action-13",
+      "errorIds": [],
+      "eventIndex": 27
+    },
+    {
+      "id": "action-15",
+      "contextId": "context-1",
+      "lane": "lane-1",
+      "operation": "Attach data",
+      "operationKnown": true,
+      "startMs": 2515.171,
+      "endMs": 2515.181,
+      "durationMs": 0.01,
+      "outcome": "passed",
+      "parentId": null,
+      "errorIds": [],
+      "eventIndex": 30
+    },
+    {
+      "id": "action-16",
+      "contextId": "context-1",
+      "lane": "lane-1",
+      "operation": "Test hook",
+      "operationKnown": true,
+      "startMs": 2518.194,
+      "endMs": 2532.07,
+      "durationMs": 13.876,
+      "outcome": "passed",
+      "parentId": null,
+      "errorIds": [],
+      "eventIndex": 33
+    },
+    {
+      "id": "action-17",
+      "contextId": "context-1",
+      "lane": "lane-1",
+      "operation": "Test fixture",
+      "operationKnown": true,
+      "startMs": 2518.46,
+      "endMs": 2531.522,
+      "durationMs": 13.062,
+      "outcome": "passed",
+      "parentId": "action-16",
+      "errorIds": [],
+      "eventIndex": 34
+    },
+    {
+      "id": "action-18",
+      "contextId": "context-1",
+      "lane": "lane-1",
+      "operation": "Test fixture",
+      "operationKnown": true,
+      "startMs": 2532.01,
+      "endMs": 2532.016,
+      "durationMs": 0.006,
+      "outcome": "passed",
+      "parentId": "action-16",
+      "errorIds": [],
+      "eventIndex": 36
+    },
+    {
+      "id": "action-19",
+      "contextId": "context-2",
+      "lane": "lane-2",
+      "operation": "Create page",
+      "operationKnown": true,
+      "startMs": 0,
+      "endMs": 54.515,
+      "durationMs": 54.515,
+      "outcome": "passed",
+      "parentId": null,
+      "errorIds": [],
+      "eventIndex": 2
+    },
+    {
+      "id": "action-20",
+      "contextId": "context-2",
+      "lane": "lane-2",
+      "operation": "Navigate",
+      "operationKnown": true,
+      "startMs": 55.946,
+      "endMs": 68.697,
+      "durationMs": 12.751,
+      "outcome": "passed",
+      "parentId": null,
+      "errorIds": [],
+      "eventIndex": 5
+    }
+  ],
+  "errors": [
+    {
+      "id": "error-1",
+      "contextId": "context-1",
+      "actionId": "action-10",
+      "name": "",
+      "message": "Error: expect(received).toContain(expected) [PATH OMITTED] indexOf\n\nExpected substring: \"PERSON_EXPECTED_NORAH_1642\"\nReceived string:    \"PERSON_ACTUAL_OTTO_8391\"",
+      "timeMs": 2487.09,
+      "eventIndex": 21
+    },
+    {
+      "id": "error-2",
+      "contextId": "context-1",
+      "actionId": null,
+      "name": null,
+      "message": "Error: expect(received).toContain(expected) [PATH OMITTED] indexOf\n\nExpected substring: \"PERSON_EXPECTED_NORAH_1642\"\nReceived string:    \"PERSON_ACTUAL_OTTO_8391\"",
+      "timeMs": null,
+      "eventIndex": 22
+    }
+  ],
+  "redactionSummary": [
+    {
+      "ruleId": "ansi",
+      "field": "errors[].message",
+      "count": 32
+    },
+    {
+      "ruleId": "absolute-path",
+      "field": "errors[].message",
+      "count": 2
+    }
+  ],
+  "omissionSummary": [
+    {
+      "category": "arguments-and-results",
+      "eventCount": 41,
+      "entryCount": 0,
+      "resourceReferenceCount": 0,
+      "reason": "excluded-by-minimal-v1"
+    },
+    {
+      "category": "test-and-step-titles",
+      "eventCount": 20,
+      "entryCount": 0,
+      "resourceReferenceCount": 0,
+      "reason": "excluded-by-minimal-v1"
+    },
+    {
+      "category": "console-and-stdio",
+      "eventCount": 1,
+      "entryCount": 0,
+      "resourceReferenceCount": 0,
+      "reason": "excluded-by-minimal-v1"
+    },
+    {
+      "category": "dom-and-aria",
+      "eventCount": 2,
+      "entryCount": 0,
+      "resourceReferenceCount": 0,
+      "reason": "excluded-by-minimal-v1"
+    },
+    {
+      "category": "images-and-video",
+      "eventCount": 0,
+      "entryCount": 0,
+      "resourceReferenceCount": 0,
+      "reason": "excluded-by-minimal-v1"
+    },
+    {
+      "category": "network",
+      "eventCount": 0,
+      "entryCount": 2,
+      "resourceReferenceCount": 0,
+      "reason": "excluded-by-minimal-v1"
+    },
+    {
+      "category": "cookies-and-storage",
+      "eventCount": 0,
+      "entryCount": 0,
+      "resourceReferenceCount": 0,
+      "reason": "excluded-by-minimal-v1"
+    },
+    {
+      "category": "source-and-stacks",
+      "eventCount": 21,
+      "entryCount": 3,
+      "resourceReferenceCount": 0,
+      "reason": "excluded-by-minimal-v1"
+    },
+    {
+      "category": "attachments",
+      "eventCount": 1,
+      "entryCount": 1,
+      "resourceReferenceCount": 1,
+      "reason": "excluded-by-minimal-v1"
+    },
+    {
+      "category": "arbitrary-resources",
+      "eventCount": 0,
+      "entryCount": 0,
+      "resourceReferenceCount": 0,
+      "reason": "excluded-by-minimal-v1"
+    }
+  ],
+  "limitations": [
+    "Review every retained error before sharing. Unknown sensitive text may remain.",
+    "This is a derived report, not a replay trace or a privacy certificate.",
+    "Omitted images are excluded without OCR or content inspection.",
+    "Clocks are local to each stream; lanes are not globally synchronized.",
+    "Browser-only traces do not establish assertion outcomes.",
+    "Literal variants checked: exact, JSON escaping, URI encoding and NFC. Other encodings are outside scope.",
+    "Opaque excluded containers are bounded but their arbitrary payload keys are not interpreted.",
+    "Archive entry sizes are declared; actual bytes are measured only for processed streams."
+  ]
+}

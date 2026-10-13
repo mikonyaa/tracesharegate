@@ -122,7 +122,9 @@
                   "invalid-duration",
                   "invalid-error-structure",
                   "unfinished-action",
-                  "unverified-parent"
+                  "unverified-parent",
+                  "unknown-error-context",
+                  "error-context-limit"
                 ]
               },
               "entryId": {
@@ -155,6 +157,8 @@
                   "events[].context-options",
                   "events[].origin",
                   "events[].operation",
+                  "events[].error.message",
+                  "events[].error.name",
                   "events[].resourceReference",
                   "actions[].parentId"
                 ]
@@ -202,8 +206,17 @@
               "credential-assignment",
               "synthetic-canary",
               "ansi",
+              "bidi",
               "control",
               "error-context",
+              "error-assertion-values",
+              "error-diff",
+              "error-call-log",
+              "error-source-context",
+              "error-unknown-context",
+              "error-context-limit",
+              "error-custom-message",
+              "error-locator-context",
               "oversize-string"
             ]
           },
@@ -252,7 +265,10 @@
             "minimum": 0
           },
           "reason": {
-            "enum": ["excluded-by-minimal-v1"]
+            "enum": [
+              "excluded-by-minimal-v1",
+              "excluded-by-minimal-v1-policy-2"
+            ]
           }
         },
         "required": [

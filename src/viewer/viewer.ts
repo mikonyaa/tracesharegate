@@ -19,26 +19,36 @@ const data = JSON.parse($("report-data").textContent ?? "{}") as {
   omissionManifest: Manifest;
 };
 const report = data.report;
+const legacyPolicy =
+  report.policy.id === "minimal-v1" && report.policy.version < 2;
 const banner = $("banner");
 banner.append(
   el(
     "strong",
-    report.processingStatus === "complete"
-      ? "Reduction complete · review required"
-      : report.processingStatus.toUpperCase() + " COVERAGE · review required",
+    legacyPolicy
+      ? "Legacy policy · assertion values may remain · review required"
+      : report.processingStatus === "complete"
+        ? "Reduction complete · review required"
+        : report.processingStatus.toUpperCase() + " COVERAGE · review required",
   ),
 );
 banner.append(
   document.createTextNode(
-    report.processingStatus === "complete"
-      ? "Selected schema fields were processed. This does not establish absence of sensitive data."
-      : report.coverage.issues
-          .map((x) => x.code + " (" + x.count + ")")
-          .join(" · "),
+    legacyPolicy
+      ? "This retained copy predates complete matcher-block omission. Generate a separate report from the original trace with the current policy."
+      : report.processingStatus === "complete"
+        ? "Selected schema fields were processed. This does not establish absence of sensitive data."
+        : report.coverage.issues
+            .map((x) => x.code + " (" + x.count + ")")
+            .join(" · "),
   ),
 );
 $("action-count").textContent = report.actions.length + " actions";
 $("coverage").append(
+  el(
+    "p",
+    "Policy: " + report.policy.id + " / version " + report.policy.version,
+  ),
   el("p", "Archive inventory: " + report.coverage.archiveInventory),
   el("p", "Recognized schema: " + report.coverage.recognizedSchema),
   el("p", "Retained fields: " + report.coverage.processedRetainedFields),
@@ -65,7 +75,7 @@ $("retained").append(
 );
 for (const r of report.redactionSummary)
   $("retained").append(
-    el("p", r.ruleId + " · " + r.field + " · " + r.count + " replacements"),
+    el("p", r.ruleId + " · " + r.field + " · count " + r.count),
   );
 const table = el("table");
 const head = el("tr");
@@ -83,6 +93,12 @@ for (const o of report.omissionSummary) {
   table.append(row);
 }
 $("omissions").append(
+  el(
+    "p",
+    legacyPolicy
+      ? "Legacy error context omission has a known matcher-value gap."
+      : "Matcher expected/received values, multiline continuations and diffs are excluded as blocks. Unknown diagnostic context is excluded and reported as incomplete. Review the retained copy before sharing.",
+  ),
   table,
   el(
     "p",
@@ -343,7 +359,7 @@ $("copy").addEventListener("click", async () => {
   }
   try {
     await navigator.clipboard.writeText(copyText);
-    $("copy-status").textContent = "Sanitized text copied.";
+    $("copy-status").textContent = "Retained text copied.";
   } catch {
     const area = el("textarea") as HTMLTextAreaElement;
     area.value = copyText;
@@ -352,7 +368,7 @@ $("copy").addEventListener("click", async () => {
     const ok = document.execCommand("copy");
     area.remove();
     $("copy-status").textContent = ok
-      ? "Sanitized text copied."
+      ? "Retained text copied."
       : "Copy unavailable. Select the retained text manually.";
   }
 });

@@ -1,11 +1,5 @@
 import { chromium } from "@playwright/test";
-import {
-  mkdtemp,
-  mkdir,
-  writeFile,
-  readFile,
-  copyFile,
-} from "node:fs/promises";
+import { mkdtemp, mkdir, writeFile, readFile } from "node:fs/promises";
 import path from "node:path";
 import { tmpdir } from "node:os";
 import { pathToFileURL } from "node:url";
@@ -20,9 +14,17 @@ import {
   CANARY,
 } from "../tests/helpers/archive.ts";
 const root = await mkdtemp(path.join(tmpdir(), "tracesharegate-ui-"));
+const consumer = process.argv.includes("--consumer")
+  ? (await readFile(".work/consumer-path.txt", "utf8")).trim()
+  : null;
 await mkdir("output/playwright", { recursive: true });
-await mkdir("docs/evidence", { recursive: true });
+await mkdir(".work/evidence", { recursive: true });
 const make = async (name, input) => {
+  if (consumer)
+    return path.join(
+      consumer,
+      name === "actual" ? "actual-output" : "ui-output/" + name,
+    );
   const r = await reduce(input, [CANARY]);
   const out = path.join(root, name);
   await writeReport(out, r.report, r.manifest, [CANARY]);
@@ -63,13 +65,13 @@ try {
       ),
     );
     await page.screenshot({
-      path: `output/playwright/report-${width}.png`,
+      path: `output/playwright/${consumer ? "consumer-" : ""}report-${width}.png`,
       fullPage: true,
     });
     await page
-      .getByRole("button", { name: "Copy sanitized text", exact: true })
+      .getByRole("button", { name: "Copy retained text", exact: true })
       .click();
-    await page.getByText("Sanitized text copied.", { exact: true }).waitFor();
+    await page.getByText("Retained text copied.", { exact: true }).waitFor();
     const copied = await page.evaluate(() => navigator.clipboard.readText());
     assert(copied.includes("Assertion"));
     assert(!copied.includes("TSG_SYNTHETIC_CANARY"));
@@ -192,18 +194,13 @@ try {
   await page.getByLabel("Search retained text").fill("action-5000");
   assert.equal(await page.locator(".action").count(), 1);
   await context.close();
-  await mkdir("docs/demo", { recursive: true });
-  for (const width of [1440, 1024, 390])
-    await copyFile(
-      `output/playwright/report-${width}.png`,
-      `docs/demo/report-${width}.png`,
-    );
   await writeFile(
-    "docs/evidence/ui.json",
+    `.work/evidence/ui${consumer ? "-consumer" : ""}.json`,
     JSON.stringify(
       {
         browser: browser.version(),
         actualReport: true,
+        packagedConsumer: !!consumer,
         viewports: evidence,
         unknownBanner: true,
         emptyState: true,

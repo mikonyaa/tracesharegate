@@ -12,6 +12,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { createHash } from "node:crypto";
 import { chromium } from "@playwright/test";
+const fixtureRoot = path.resolve(".work/recorded-fixtures");
 const canary = 'TSG_SYNTHETIC_CANARY_09_"<&Ж🙂';
 const app = `<!doctype html><html><body style="font:20px monospace;padding:36px"><h1>Synthetic fixture</h1><p>Visible synthetic canary</p><pre id="canary"></pre><label>Sample value <input aria-label="Sample value"></label><button>Submit sample</button><p data-testid="status">Pending</p><script>const c=${JSON.stringify(canary).replaceAll("<", "\\u003c")};document.getElementById('canary').textContent=c;document.querySelector('button').onclick=async()=>{console.error(c);await fetch('/sample',{method:'POST',body:c});document.querySelector('[data-testid=status]').textContent='Pending '+c;setTimeout(()=>{throw new Error(c)},0);};</script></body></html>`;
 const server = createServer((req, res) => {
@@ -104,7 +105,7 @@ try {
     ["timeout", "Timeout"],
     ["navigation", "net::ERR"],
   ];
-  await mkdir("fixtures/synthetic", { recursive: true });
+  await mkdir(fixtureRoot, { recursive: true });
   const recorded = [];
   for (const [index, c] of cases.entries()) {
     if (c.status !== "failed" || !c.error.includes(expected[index][1]))
@@ -112,8 +113,8 @@ try {
     const trace = c.attachments.find((a) => a.name === "trace");
     if (!trace) throw new Error("Trace missing");
     const name = expected[index][0] + ".zip";
-    await copyFile(trace.path, "fixtures/synthetic/" + name);
-    const bytes = await readFile("fixtures/synthetic/" + name);
+    await copyFile(trace.path, path.join(fixtureRoot, name));
+    const bytes = await readFile(path.join(fixtureRoot, name));
     recorded.push({
       id: expected[index][0],
       sha256: createHash("sha256").update(bytes).digest("hex"),
@@ -136,10 +137,12 @@ try {
     await page.goto(base);
     await page.getByLabel("Sample value").fill("Browser only");
     await page.getByRole("button").click();
-    await context.tracing.stop({ path: "fixtures/synthetic/browser-only.zip" });
+    await context.tracing.stop({
+      path: path.join(fixtureRoot, "browser-only.zip"),
+    });
     await context.close();
     await writeFile(
-      "fixtures/provenance/recording.json",
+      path.join(fixtureRoot, "provenance.json"),
       JSON.stringify(
         {
           playwright: "1.63.0",

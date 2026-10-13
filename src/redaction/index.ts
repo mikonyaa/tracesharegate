@@ -2,6 +2,10 @@ import { snapshot } from "../zip/index.js";
 import { check, GateError, LIMITS, jsonArtifact } from "../limits/index.js";
 import type { Redaction } from "../schemas/types.js";
 import { BUILTIN_PATTERNS as patterns } from "../policy/patterns.js";
+import {
+  errorContext,
+  type ErrorContext,
+} from "../adapters/playwright-supported/error-context.js";
 export async function readLiterals(
   file: string | undefined,
 ): Promise<string[]> {
@@ -106,35 +110,78 @@ export class Redactor {
       });
       this.note(rule.id, field, count);
     }
+    if (Buffer.byteLength(text) > LIMITS.retainedString) {
+      this.note("oversize-string", field);
+      return null;
+    }
     return text;
   }
-  error(value: unknown, field: string): string | null {
-    const text = this.sanitize(value, field);
-    if (text === null) return null;
-    // Discard selector/expected/received/log/stack/code-frame sections in full.
-    const lines = text.split("\n");
-    const kept: string[] = [];
-    let omitted = 0;
-    for (const line of lines) {
-      if (
-        /^(?:Call log:|\s*at\s|\s*\d+\s*[|]|\s*>\s*\d+|Locator:|Expected:|Received:)/.test(
-          line,
-        )
-      ) {
-        omitted++;
-        if (line.startsWith("Call log:")) break;
-        continue;
-      }
-      if (kept.length < 8) kept.push(line);
-      else omitted++;
+  error(
+    value: unknown,
+    field: string,
+    onIssue?: (code: NonNullable<ErrorContext["issue"]>) => void,
+  ): string | null {
+    if (typeof value !== "string") {
+      onIssue?.("unknown-error-context");
+      return null;
     }
-    this.note("error-context", field, omitted);
-    return kept.join("\n").trim() || null;
+    if (Buffer.byteLength(value) > LIMITS.retainedString) {
+      this.note("oversize-string", field);
+      onIssue?.("error-context-limit");
+      return null;
+    }
+    // Parse envelopes before URL/path/literal replacement can alter their grammar.
+    let text = value;
+    for (const rule of patterns.filter((p) =>
+      ["ansi", "bidi", "control"].includes(p.id),
+    )) {
+      let count = 0;
+      text = text.replace(rule.pattern, () => {
+        count++;
+        return rule.replacement;
+      });
+      this.note(rule.id, field, count);
+    }
+    const context = errorContext(text);
+    let total = 0;
+    for (const [rule, count] of Object.entries(context.omitted)) {
+      this.note(rule, field, count);
+      total += count;
+    }
+    this.note("error-context", field, total);
+    if (context.issue) onIssue?.(context.issue);
+    const retained =
+      context.text === null
+        ? null
+        : (this.sanitize(context.text, field)?.trim() ?? null);
+    if (context.text !== null && retained === null) {
+      onIssue?.("error-context-limit");
+      return null;
+    }
+    if (retained !== null) {
+      const finalContext = errorContext(retained);
+      if (finalContext.issue || finalContext.text !== retained) {
+        this.note("error-unknown-context", field);
+        this.note("error-context", field);
+        onIssue?.("unknown-error-context");
+        return null;
+      }
+    }
+    return retained;
   }
   assertLiterals(text: string): void {
     for (const v of this.variants)
       if (text.includes(v.value))
         throw new GateError("literal-postcondition", 1);
+  }
+  assertErrorContext(text: string | null): void {
+    if (text === null) return;
+    let unknown = false;
+    const checked = this.error(text, "errors[].message", () => {
+      unknown = true;
+    });
+    if (unknown || checked !== text)
+      throw new GateError("error-context-postcondition", 1);
   }
   assertBuiltin(text: string): void {
     for (const p of patterns.filter(

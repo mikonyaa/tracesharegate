@@ -1,4 +1,6 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, writeFile, readFile } from "node:fs/promises";
+import { format } from "prettier";
+const checking = process.argv.includes("--check");
 const str = { type: "string", maxLength: 8192 },
   integer = { type: "integer", minimum: 0 },
   nullable = (x) => ({ anyOf: [x, { type: "null" }] }),
@@ -50,6 +52,8 @@ const codes = [
   "invalid-error-structure",
   "unfinished-action",
   "unverified-parent",
+  "unknown-error-context",
+  "error-context-limit",
 ];
 const rules = [
   "known-literal",
@@ -65,8 +69,17 @@ const rules = [
   "credential-assignment",
   "synthetic-canary",
   "ansi",
+  "bidi",
   "control",
   "error-context",
+  "error-assertion-values",
+  "error-diff",
+  "error-call-log",
+  "error-source-context",
+  "error-unknown-context",
+  "error-context-limit",
+  "error-custom-message",
+  "error-locator-context",
   "oversize-string",
 ];
 const issue = obj({
@@ -80,6 +93,8 @@ const issue = obj({
     "events[].context-options",
     "events[].origin",
     "events[].operation",
+    "events[].error.message",
+    "events[].error.name",
     "events[].resourceReference",
     "actions[].parentId",
   ),
@@ -123,7 +138,7 @@ const omissions = arr(
     eventCount: integer,
     entryCount: integer,
     resourceReferenceCount: integer,
-    reason: enm("excluded-by-minimal-v1"),
+    reason: enm("excluded-by-minimal-v1", "excluded-by-minimal-v1-policy-2"),
   }),
   20,
 );
@@ -280,7 +295,7 @@ const manifest = obj({
 });
 const policyDefinition = obj({
   id: enm("minimal-v1"),
-  version: enm(1),
+  version: enm(1, 2),
   retained: arr(str, 30),
   omitted: arr(enm(...categories), 20),
   rules: arr(enm(...rules), 30),
@@ -290,9 +305,9 @@ for (const [name, schema] of Object.entries({
   report,
   manifest,
   policy: policyDefinition,
-}))
-  await writeFile(
-    "schemas/" + name + ".schema.json",
+})) {
+  const file = "schemas/" + name + ".schema.json";
+  const bytes = await format(
     JSON.stringify(
       {
         $schema: "http://json-schema.org/draft-07/schema#",
@@ -301,5 +316,16 @@ for (const [name, schema] of Object.entries({
       },
       null,
       2,
-    ) + "\n",
+    ),
+    { parser: "json" },
   );
+  if (checking) {
+    if ((await readFile(file, "utf8")) !== bytes)
+      throw new Error("Non-reproducible schema: " + file);
+  } else await writeFile(file, bytes);
+}
+console.log(
+  checking
+    ? "Schemas match generator and canonical formatting."
+    : "Generated canonical schemas.",
+);

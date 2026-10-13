@@ -25,6 +25,7 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - run: npm ci
+      - run: npm run schemas:check
       - run: npm run typecheck
       - run: npm run lint
       - run: npm run build
@@ -44,8 +45,8 @@ jobs:
         with:
           name: release-candidate
           path: |
-            .work/release-upload/tracesharegate-0.1.0.tgz
-            .work/release-upload/tracesharegate-example-0.1.0.zip
+            .work/release-upload/tracesharegate-0.1.1.tgz
+            .work/release-upload/tracesharegate-example-0.1.1.zip
             .work/release-upload/release-manifest.json
             .work/release-upload/SHA256SUMS
           if-no-files-found: error

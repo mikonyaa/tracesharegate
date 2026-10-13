@@ -5,6 +5,7 @@ Use Node 22 or newer. Clone this repository into a separate working directory.
 ```sh
 npm ci
 npx playwright install chromium
+npm run schemas:check
 npm run typecheck
 npm run lint
 npm run build
@@ -30,4 +31,4 @@ CI package and Pages uploads use explicit file allowlists. Published tags and
 assets are immutable; corrections require a new version. Before submitting changes,
 verify an installed final tarball in a clean consumer without development packages.
 
-External feedback is welcome; no external user validation is claimed for v0.1.0.
+No external user validation is claimed for the local 0.1.1 candidate. Follow docs/independent-review-runbook.md after separate authorization. Fresh recordings/evidence go into ignored .work/output directories; never replace historical fixtures to conceal a regression.

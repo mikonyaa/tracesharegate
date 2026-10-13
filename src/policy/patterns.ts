@@ -5,6 +5,11 @@ export const BUILTIN_PATTERNS: {
 }[] = [
   { id: "ansi", pattern: /\x1b\[[0-9;]{0,40}[A-Za-z]/g, replacement: "" },
   {
+    id: "bidi",
+    pattern: /[\u061c\u200e\u200f\u202a-\u202e\u2066-\u2069]/g,
+    replacement: "",
+  },
+  {
     id: "synthetic-canary",
     pattern: /TSG_SYNTHETIC_CANARY_[^\s\r\n]{0,1024}/g,
     replacement: "[SYNTHETIC OMITTED]",
