@@ -13,7 +13,7 @@ import {
   mutateRecorded,
   ndjson,
 } from "../helpers/archive.js";
-const fixture = (name: string) => "fixtures/synthetic/" + name + ".zip";
+const fixture = (name: string) => ".work/recorded-fixtures/" + name + ".zip";
 for (const [scenario, operation, explanation] of [
   ["assertion", "Assertion", "failed"],
   ["timeout", "Click", "Timeout"],
@@ -26,7 +26,13 @@ for (const [scenario, operation, explanation] of [
     async () => {
       const original = await readFile(fixture(scenario));
       const r = await reduce(fixture(scenario), [CANARY]);
-      assert.equal(r.exitCode, 0);
+      assert.equal(r.exitCode, scenario === "assertion" ? 3 : 0);
+      if (scenario === "assertion")
+        assert(
+          r.report.coverage.issues.every(
+            (i) => i.code === "unknown-error-context",
+          ),
+        );
       const failed = r.report.actions.filter((a) => a.outcome === "failed");
       assert(failed.some((a) => a.operation === operation));
       assert(r.report.errors.some((e) => e.message?.includes(explanation)));
@@ -96,6 +102,7 @@ test("canary exists in original action, console/error, network, DOM, screenshot 
         .subarray(0, 8)
         .equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])),
   );
+  await mkdir(".work/evidence", { recursive: true });
   await mkdir("output/playwright", { recursive: true });
   await writeFile(
     "output/playwright/original-synthetic-canary.png",
@@ -138,7 +145,7 @@ test("canary exists in original action, console/error, network, DOM, screenshot 
     "performed",
   );
   await writeFile(
-    "docs/evidence/canary-surfaces.json",
+    ".work/evidence/canary-surfaces.json",
     JSON.stringify(
       {
         synthetic: true,
@@ -219,7 +226,10 @@ test("repeated references and duplicate resource bytes count entries and links s
     });
   });
   const r = await reduce(input);
-  assert.equal(r.exitCode, 0);
+  assert.equal(r.exitCode, 3);
+  assert(
+    r.report.coverage.issues.every((i) => i.code === "unknown-error-context"),
+  );
   assert(r.manifest.resources.some((l) => l.references >= 2));
   const physical = r.manifest.entries.filter(
     (e) => e.category === "arbitrary-resources",

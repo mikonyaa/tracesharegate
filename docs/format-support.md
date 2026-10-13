@@ -1,6 +1,6 @@
 # Supported released format
 
-v0.1.0 supports exactly Playwright **1.63.0**, trace schema **9**, JavaScript/TypeScript
+The local v0.1.1 candidate supports exactly Playwright **1.63.0**, trace schema **9**, JavaScript/TypeScript
 runner/library Chromium fixtures. The released tag peels to
 `1b025d7e20a026371cd5f98ba0cdce48892737c8`.
 
@@ -55,3 +55,5 @@ See [Playwright tracing documentation](https://playwright.dev/docs/api/class-tra
 The source fixture, capture options, version and hashes are recorded under
 `fixtures/provenance/`. The six-surface canary test inspects actual archive data;
 PNG presence/signature and manual visible-text inspection are distinct from text scanning.
+
+Diagnostic coverage is separately bounded by policy version 2. Locator error bodies and unrecognized matcher formats may produce incomplete coverage even in this exact trace family; see [migration](migration-0.1.1.md).

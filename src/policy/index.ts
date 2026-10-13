@@ -1,6 +1,13 @@
 import { BUILTIN_PATTERNS } from "./patterns.js";
 import { createHash } from "node:crypto";
-export const VERSION = "0.1.0";
+import { ERROR_CONTEXT_GRAMMAR } from "../adapters/playwright-supported/error-context.js";
+export const VERSION = "0.1.1";
+export const LEGACY_POLICY = {
+  id: "minimal-v1",
+  version: 1,
+  fingerprint:
+    "9d39ec57f6893725f9bb62187d7d525ec4c52e8ae752797313b7e8593b383108",
+} as const;
 export const ADAPTER = {
   id: "playwright-1.63.0-v9",
   version: "1",
@@ -10,7 +17,7 @@ export const ADAPTER = {
 } as const;
 export const POLICY = {
   id: "minimal-v1",
-  version: 1,
+  version: 2,
   retained: [
     "local IDs",
     "known operation labels",
@@ -46,8 +53,17 @@ export const POLICY = {
     "credential-assignment",
     "synthetic-canary",
     "ansi",
+    "bidi",
     "control",
     "error-context",
+    "error-assertion-values",
+    "error-diff",
+    "error-call-log",
+    "error-source-context",
+    "error-unknown-context",
+    "error-context-limit",
+    "error-custom-message",
+    "error-locator-context",
     "oversize-string",
   ],
 } as const;
@@ -119,5 +135,6 @@ export const POLICY_HASH = hash(
     })),
     retainedStringBytes: 8192,
     literalVariants: ["exact", "json", "uri", "nfc"],
+    errorContext: ERROR_CONTEXT_GRAMMAR,
   }),
 );

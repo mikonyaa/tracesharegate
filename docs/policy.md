@@ -1,9 +1,9 @@
-# minimal-v1 policy and coverage
+# minimal-v1 policy version 2 and coverage
 
 The policy is versioned code and a JSON Schema, not an executable user config.
 Its SHA-256 fingerprint covers its ID, version, retained/omitted categories and
 built-in rule definitions, operation mapping and string/literal scope. Changes to rule implementation require a tool release and policy
-review. Unknown policy versions/fingerprints cannot pass policy verification.
+review. Known policy 1 is explicitly refused with legacy-policy-reduction-required; other unknown policy versions/fingerprints cannot pass policy verification. See [migration](migration-0.1.1.md).
 
 Only local IDs, known operation labels, stream-relative times, outcomes, proved
 parents, bounded redacted errors, counts and coverage enter the report. All other
@@ -39,13 +39,33 @@ normalization-conflicting names are rejected.
 
 ## Error text and redaction
 
-Errors over 8 KiB are omitted whole before truncation. The pipeline parses JSON,
-selects permitted strings, masks whole URL/path spans, processes longest-first
-literal variants, applies named built-ins, and finally serializes/escapes HTML.
-Selectors, expected/received values, call-log payloads, stack/code-frame sections are
-removed; at most eight remaining diagnostic lines are retained. Replacements use
-stable markers. Summary rows contain a rule ID, fixed field path and replacement
-count, never values or hashes of individual literals.
+Error names/messages are bounded to 8 KiB of UTF8 both before and after replacements.
+The adapter normalizes ANSI/bidi/control formatting, recognizes fixed matcher
+headers and diagnostic envelopes from the pinned Playwright helpers, and omits
+expected/received values, complete multiline continuations and prefixed diffs.
+Only closed quoted values or strict JSON containers establish a value boundary;
+Symbol and regex-bearing pretty containers are excluded with unknown coverage.
+Known single-line custom-message prefixes and matcher receiver arguments are omitted.
+No person/project canary value is hardcoded in built-in patterns.
+
+A Locator description can contain arbitrary raw newlines. The complete body from
+`Locator:` onward is excluded and reported as `unknown-error-context`; the known
+matcher heading stays useful. No timeout/call-log/source-looking line inside that
+body is promoted to a trusted diagnostic. Unknown headers, receiver envelopes and
+continuations are excluded, never guessed safe. More than 128 diagnostic lines or
+excessive final bytes yields `error-context-limit` and incomplete coverage. At most
+eight diagnostic lines can be retained; ordinary single-line errors plus source/log
+omission remain supported. This does not classify arbitrary retained plain error
+text as private-data-free.
+
+Whole URL/path spans, longest-first literal variants and bounded built-ins apply to
+retained text before serialization/HTML escaping. The final envelope must remain
+recheckable after sanitization; otherwise it is excluded with incomplete coverage.
+Reason rows record fixed rule IDs and field paths without values or per-secret
+hashes. Error block counts count discarded lines (including opaque tail lines);
+`error-context-limit` counts omitted messages and `oversize-string` counts fields.
+Formatting/literal rows count replacements. The aggregate `error-context` count is
+omission accounting, not the count of distinct sensitive values.
 
 Final retained data and JSON/HTML/manifest bytes are rechecked. A known-literal or
 built-in postcondition failure prevents publication of a finished output directory.
@@ -62,7 +82,7 @@ with the JSON hash; the canonical sibling manifest contains the HTML hash too.
 
 `verify` reads bounded untrusted artifacts, validates schemas and relationships,
 compares policy/report/manifest data, checks bytes and reconstructs the trusted HTML
-without executing supplied text. Unknown policies fail. A supplied literal file is
+without executing supplied text. Known legacy policy fails explicitly; unknown policies fail. Current verification rechecks retained error context even if the supplied hashes and HTML were coherently rebuilt. A supplied literal file is
 required to rerun local literal checks; no hidden cache exists. Previously recorded
 redaction counts are history, not fresh checks. Hashes establish consistency, not
 authenticity, authorship or privacy.

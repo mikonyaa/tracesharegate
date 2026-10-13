@@ -1,6 +1,6 @@
 {
   "name": "tracesharegate",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Export minimal debugging reports from Playwright traces with an explicit omission manifest.",
   "type": "module",
   "bin": {
@@ -33,13 +33,15 @@
     "lint": "eslint src tests scripts",
     "build": "node scripts/build.mjs",
     "test:unit": "node --test --import tsx tests/unit/*.test.ts",
-    "test:recorded": "node scripts/record-fixtures.mjs && node --test --import tsx tests/recorded-traces/*.test.ts",
+    "test:recorded": "node scripts/record-fixtures.mjs && node scripts/record-matcher-fixtures.mjs && node --test --import tsx tests/recorded-traces/*.test.ts",
     "test:adversarial": "node --test --import tsx tests/adversarial/*.test.ts",
-    "test:ui": "node --import tsx scripts/ui-qa.mjs",
-    "test:package": "node scripts/verify-package.mjs",
+    "test:ui": "node --import tsx scripts/ui-qa.mjs && node scripts/matcher-ui-qa.mjs",
+    "test:package": "node scripts/verify-package.mjs && node scripts/matcher-ui-qa.mjs --consumer && node --import tsx scripts/ui-qa.mjs --consumer",
     "build:site": "node scripts/build-site.mjs",
     "prepack": "npm run build",
-    "test:trace-viewer": "node scripts/trace-viewer-qa.mjs"
+    "test:trace-viewer": "node scripts/trace-viewer-qa.mjs",
+    "schemas:generate": "node scripts/generate-schemas.mjs",
+    "schemas:check": "node scripts/generate-schemas.mjs --check"
   },
   "dependencies": {
     "ajv": "8.20.0",

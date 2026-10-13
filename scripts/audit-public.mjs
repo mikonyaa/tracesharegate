@@ -35,10 +35,18 @@ const rootAllowed = new Set([
   ".gitignore",
   "fixtures/playwright.config.ts",
 ]);
+const legacyAllowed = new Set([
+  "fixtures/legacy-policy/README.md",
+  "fixtures/legacy-policy/manifest.json",
+  "fixtures/legacy-policy/report.html",
+  "fixtures/legacy-policy/report.json",
+]);
 assert.equal(new Set(files).size, files.length, "Duplicate public path");
 for (const f of files) {
   assert(
-    rootAllowed.has(f) || allowed.some((p) => f.startsWith(p)),
+    rootAllowed.has(f) ||
+      legacyAllowed.has(f) ||
+      allowed.some((p) => f.startsWith(p)),
     "Unexpected public path",
   );
   assert(
@@ -92,6 +100,7 @@ assert(
     (f) =>
       f.path.startsWith("docs/evidence/") ||
       f.path.startsWith("docs/demo/") ||
+      f.path.startsWith("fixtures/legacy-policy/") ||
       f.path.includes("local-policy"),
   ),
 );

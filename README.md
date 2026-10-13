@@ -8,8 +8,8 @@ omitted or unknown. The original ZIP stays unchanged. Every output has
 `needsReview: true`: this is a diagnostic artifact, not a replay trace or a
 certificate that sensitive information is absent.
 
-[Live synthetic report](https://mikonyaa.github.io/tracesharegate/) ·
-[Release downloads](https://github.com/mikonyaa/tracesharegate/releases/tag/v0.1.0) ·
+[Historical policy 1 synthetic report](https://mikonyaa.github.io/tracesharegate/) ·
+[Historical 0.1.0 downloads](https://github.com/mikonyaa/tracesharegate/releases/tag/v0.1.0) ·
 [20–30 second screenshot walkthrough](docs/demo.md)
 
 ![Actual reduced runner assertion report](docs/demo/report-1440.png)
@@ -28,24 +28,30 @@ Redaction, trace sanitization and HTML reports already exist. See
 Our [same-sample comparison](docs/comparison.md) documents a particular
 configuration, observed inventories and the context intentionally lost.
 
-## Install the Release archive
+## Install the local 0.1.1 candidate
 
 Requires Node **22+** and npm. Runtime installation does not include Playwright or
 download a browser. After dependency installation, processing uses no network,
 account, cloud service or paid API. This package has not been published to npm.
 
+With the locally built candidate tgz in the current directory:
+
 ```sh
-mkdir tracesharegate-demo && cd tracesharegate-demo
-curl -fL -o tracesharegate-0.1.0.tgz \
-  https://github.com/mikonyaa/tracesharegate/releases/download/v0.1.0/tracesharegate-0.1.0.tgz
-npm install --ignore-scripts --omit=dev ./tracesharegate-0.1.0.tgz
+npm install --ignore-scripts --omit=dev ./tracesharegate-0.1.1.tgz
 ./node_modules/.bin/tracesharegate doctor
 ./node_modules/.bin/tracesharegate demo --out demo-output
 ```
 
-Open `demo-output/report.html` locally. It works through `file://` with no network
-or persistent storage. The Release also includes an example bundle and checksums.
-The checksums establish byte consistency, not authenticity or privacy.
+Open `demo-output/report.html` locally. The packaged locator assertion demo now
+returns exit 3/incomplete because its raw description boundary cannot be trusted;
+the failure heading and event references remain. `verify` can check its consistency
+without upgrading that coverage. The file works offline through `file://`.
+
+The old public links/screenshots above are historical policy 1 artifacts with a
+known matcher-value omission gap. They do not demonstrate the new policy. This
+0.1.1 candidate is local and unpublished. Read [migration](docs/migration-0.1.1.md)
+and the [independent review runbook](docs/independent-review-runbook.md).
+Checksums establish byte consistency, not authenticity or privacy.
 
 ## Commands
 
@@ -81,7 +87,7 @@ and HTML hashes. This avoids a self-referential HTML hash. Use that final manife
 with `verify`, and share the three files together when retaining hash verification.
 
 `verify` bounds and validates its inputs, checks supported policy fingerprints,
-relationships, final file hashes, built-in patterns and an exact reconstruction of
+relationships, final file hashes, retained matcher context, built-in patterns and an exact reconstruction of
 the trusted renderer. It never executes imported HTML. Without a literal file it
 reports `literalRecheck: "not-performed"`, even if an earlier report applied literals.
 Passing the same local file reruns that check. Literal values are never cached in
@@ -98,11 +104,11 @@ Longest overlapping literals win deterministically. Checks cover exact strings,
 JSON escaping, `encodeURIComponent` variants and NFC normalization. They do not
 recognize every base64 encoding, Unicode transformation or unknown secret. Whole
 URLs and absolute/home paths in retained error text are replaced before literal
-markers can split their spans. A retained string over 8 KiB is omitted in full.
+markers can split their spans. A retained string over 8 KiB before or after replacement is omitted in full. Matcher envelopes are parsed before those replacements so URLs and literals cannot destroy their boundaries.
 
 ## Retained / omitted
 
-| Surface                                           | minimal-v1 behavior                                                        |
+| Surface                                           | minimal-v1 / policy 2 behavior                                                        |
 | ------------------------------------------------- | -------------------------------------------------------------------------- |
 | Action/context IDs                                | Locally generated ordinal IDs                                              |
 | Operation                                         | Tool-owned label from allowlisted class/method mapping                     |
@@ -115,7 +121,7 @@ markers can split their spans. A retained string over 8 KiB is omitted in full.
 | DOM/ARIA snapshots, images, video                 | Omitted; images are **not OCR scanned**                                    |
 | Network, cookies, storage                         | Omitted                                                                    |
 | Source, stack frames, attachments, resource bytes | Omitted                                                                    |
-| Unknown event/field/entry/version                 | Explicit unknown, lower coverage, exit 3                                   |
+| Unknown event/field/entry/version/error context                 | Explicit unknown, lower coverage, exit 3                                   |
 
 Error text is intentionally retained for diagnosis and may contain unknown sensitive
 information. Read it before sharing. The HTML preview shows the final retained
@@ -126,7 +132,7 @@ text, never a hidden original, raw tooltip or before pane.
 `complete` means the selected supported scope was reduced under the policy.
 `incomplete` means a partial timeline with concrete unknown/structural reasons.
 `unsupported` means no supported stream was available; a diagnostic manifest is
-still produced. Partial results have a prominent banner and are not promoted to
+still produced. Locator diagnostic bodies, unsupported pretty values and unknown matcher grammar explicitly lower coverage. Partial results have a prominent banner and are not promoted to
 complete. An unfinished action never becomes passed. An untimed runner error shows
 its original event index. Browser-only traces never establish assertion outcomes.
 
@@ -143,7 +149,7 @@ consistency verification of a partial report does not upgrade its coverage.
 
 ## Format and checks
 
-Exactly Playwright **1.63.0**, released trace family **9**, is supported in v0.1.0.
+Exactly Playwright **1.63.0**, released trace family **9**, is supported in the local v0.1.1 candidate.
 See [pinned source provenance and event kinds](docs/format-support.md). Other releases
 require a separate tested adapter, even when a schema number looks familiar.
 Tracing through the Test runner captures assertions; `context.tracing` alone does
@@ -158,7 +164,7 @@ in processed streams and malformed JSON abort. See the [threat model](docs/threa
 
 Read [coverage definitions](docs/policy.md), [limitations](docs/limitations.md),
 [maintenance](docs/maintenance.md), and [contributor checks](CONTRIBUTING.md).
-Evidence in [docs/evidence](docs/evidence) records observed synthetic tests,
+Historical policy 1 evidence in [docs/evidence](docs/evidence) records observed synthetic tests,
 browser QA and clean package consumers. Public CI records the exact tested commit.
 No external user feedback, universal compatibility or independent privacy audit is claimed.
 

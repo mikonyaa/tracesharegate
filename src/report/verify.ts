@@ -1,7 +1,13 @@
 import { snapshot } from "../zip/index.js";
 import { isDeepStrictEqual } from "node:util";
 import { GateError, check, LIMITS, jsonArtifact } from "../limits/index.js";
-import { POLICY, POLICY_HASH, hash, ADAPTER } from "../policy/index.js";
+import {
+  POLICY,
+  POLICY_HASH,
+  hash,
+  ADAPTER,
+  LEGACY_POLICY,
+} from "../policy/index.js";
 import { validateReport, validateManifest } from "../schemas/index.js";
 import { Redactor } from "../redaction/index.js";
 import { render } from "./render.js";
@@ -30,6 +36,11 @@ export async function verifyFiles(
     manifest = jsonArtifact(manifestBytes.toString("utf8"));
   validateReport(report);
   validateManifest(manifest);
+  if (
+    isDeepStrictEqual(report.policy, LEGACY_POLICY) &&
+    isDeepStrictEqual(manifest.policy, LEGACY_POLICY)
+  )
+    throw new GateError("legacy-policy-reduction-required", 3);
   if (
     report.policy.id !== POLICY.id ||
     report.policy.version !== POLICY.version ||
@@ -165,6 +176,7 @@ export async function verifyFiles(
   const expected = await render(report, manifest);
   check(htmlBytes.equals(Buffer.from(expected)), "html-renderer-mismatch");
   const redactor = new Redactor(literals);
+  for (const e of report.errors) redactor.assertErrorContext(e.message);
   const work: unknown[] = [report, manifest];
   while (work.length) {
     const v = work.pop();
@@ -185,6 +197,8 @@ export async function verifyFiles(
     schemaVerification: "passed",
     hashVerification: "passed",
     policyVerification: "passed",
+    policyVersion: report.policy.version,
+    assertionContextRecheck: "performed",
     htmlVerification: "trusted-renderer-match",
     builtinRecheck: "performed",
     literalRecheck: literals.length ? "performed" : "not-performed",

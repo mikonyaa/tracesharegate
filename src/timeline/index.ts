@@ -66,12 +66,19 @@ export class Lane {
     check(this.owner.errors.length < this.owner.budget.errors, "error-limit");
     const data = object(value) ? value : {};
     const id = "error-" + (this.owner.errors.length + 1);
+    const name = this.owner.redactor.sanitize(data.name, "errors[].name");
+    if (typeof data.name === "string" && name === null)
+      this.issue("error-context-limit", index, "events[].error.name");
     const err: ReportError = {
       id,
       contextId: this.context.id,
       actionId: action?.id ?? null,
-      name: this.owner.redactor.sanitize(data.name, "errors[].name"),
-      message: this.owner.redactor.error(data.message, "errors[].message"),
+      name,
+      message: this.owner.redactor.error(
+        data.message,
+        "errors[].message",
+        (code) => this.issue(code, index, "events[].error.message"),
+      ),
       timeMs:
         end !== null && this.base !== null
           ? Math.round((end - this.base) * 1000) / 1000

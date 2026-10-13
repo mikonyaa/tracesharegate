@@ -63,7 +63,7 @@ export async function reduce(
     eventCount: 0,
     entryCount: 0,
     resourceReferenceCount: 0,
-    reason: "excluded-by-minimal-v1",
+    reason: "excluded-by-minimal-v1-policy-2",
   }));
   const omit = (
     category: string,

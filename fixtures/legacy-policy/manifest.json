@@ -1,0 +1,272 @@
+{
+  "schemaVersion": 1,
+  "tool": {
+    "name": "tracesharegate",
+    "version": "0.1.0"
+  },
+  "parser": {
+    "id": "playwright-1.63.0-v9",
+    "version": "1",
+    "playwright": "1.63.0",
+    "traceVersion": 9,
+    "sourceCommit": "1b025d7e20a026371cd5f98ba0cdce48892737c8"
+  },
+  "input": {
+    "sha256": "1c49ada40658d6bbc98abc735a5e464ff983c1c34042e81ae6b927486e9b7316",
+    "bytes": 5621
+  },
+  "policy": {
+    "id": "minimal-v1",
+    "version": 1,
+    "fingerprint": "9d39ec57f6893725f9bb62187d7d525ec4c52e8ae752797313b7e8593b383108"
+  },
+  "processingStatus": "complete",
+  "needsReview": true,
+  "coverage": {
+    "archiveInventory": "complete",
+    "recognizedSchema": "complete",
+    "processedRetainedFields": "complete",
+    "patternMatching": "bounded-built-ins",
+    "literalCheck": "not-performed",
+    "events": 48,
+    "streams": 3,
+    "assertionScope": "runner-observations",
+    "issues": []
+  },
+  "entries": [
+    {
+      "id": "entry-1",
+      "category": "source-and-stacks",
+      "disposition": "omitted",
+      "reason": "excluded-by-policy",
+      "declaredCompressedBytes": 507,
+      "declaredUncompressedBytes": 1189,
+      "actualProcessedBytes": null,
+      "contentsInspected": false,
+      "retainedFieldPaths": []
+    },
+    {
+      "id": "entry-2",
+      "category": "attachments",
+      "disposition": "omitted",
+      "reason": "excluded-by-policy",
+      "declaredCompressedBytes": 843,
+      "declaredUncompressedBytes": 1980,
+      "actualProcessedBytes": null,
+      "contentsInspected": false,
+      "retainedFieldPaths": []
+    },
+    {
+      "id": "entry-3",
+      "category": "trace-stream",
+      "disposition": "retained-derived",
+      "reason": "allowlisted-derived-fields",
+      "declaredCompressedBytes": 1382,
+      "declaredUncompressedBytes": 6851,
+      "actualProcessedBytes": 6851,
+      "contentsInspected": true,
+      "retainedFieldPaths": [
+        "contexts[]",
+        "actions[]",
+        "errors[]"
+      ]
+    },
+    {
+      "id": "entry-4",
+      "category": "trace-stream",
+      "disposition": "retained-derived",
+      "reason": "allowlisted-derived-fields",
+      "declaredCompressedBytes": 1038,
+      "declaredUncompressedBytes": 2551,
+      "actualProcessedBytes": 2551,
+      "contentsInspected": true,
+      "retainedFieldPaths": [
+        "contexts[]",
+        "actions[]",
+        "errors[]"
+      ]
+    },
+    {
+      "id": "entry-5",
+      "category": "network-stream",
+      "disposition": "omitted",
+      "reason": "excluded-by-policy",
+      "declaredCompressedBytes": 2,
+      "declaredUncompressedBytes": 0,
+      "actualProcessedBytes": 0,
+      "contentsInspected": true,
+      "retainedFieldPaths": []
+    },
+    {
+      "id": "entry-6",
+      "category": "source-and-stacks",
+      "disposition": "omitted",
+      "reason": "excluded-by-policy",
+      "declaredCompressedBytes": 132,
+      "declaredUncompressedBytes": 147,
+      "actualProcessedBytes": null,
+      "contentsInspected": false,
+      "retainedFieldPaths": []
+    },
+    {
+      "id": "entry-7",
+      "category": "trace-stream",
+      "disposition": "retained-derived",
+      "reason": "allowlisted-derived-fields",
+      "declaredCompressedBytes": 266,
+      "declaredUncompressedBytes": 359,
+      "actualProcessedBytes": 359,
+      "contentsInspected": true,
+      "retainedFieldPaths": [
+        "contexts[]",
+        "actions[]",
+        "errors[]"
+      ]
+    },
+    {
+      "id": "entry-8",
+      "category": "network-stream",
+      "disposition": "omitted",
+      "reason": "excluded-by-policy",
+      "declaredCompressedBytes": 2,
+      "declaredUncompressedBytes": 0,
+      "actualProcessedBytes": 0,
+      "contentsInspected": true,
+      "retainedFieldPaths": []
+    },
+    {
+      "id": "entry-9",
+      "category": "source-and-stacks",
+      "disposition": "omitted",
+      "reason": "excluded-by-policy",
+      "declaredCompressedBytes": 132,
+      "declaredUncompressedBytes": 147,
+      "actualProcessedBytes": null,
+      "contentsInspected": false,
+      "retainedFieldPaths": []
+    }
+  ],
+  "resources": [
+    {
+      "entryId": "entry-2",
+      "category": "attachments",
+      "references": 1
+    }
+  ],
+  "retainedFieldPaths": [
+    "contexts[].id",
+    "contexts[].lane",
+    "contexts[].origin",
+    "actions[].id",
+    "actions[].contextId",
+    "actions[].operation",
+    "actions[].startMs",
+    "actions[].endMs",
+    "actions[].durationMs",
+    "actions[].outcome",
+    "actions[].parentId",
+    "actions[].errorIds",
+    "errors[].message",
+    "errors[].name",
+    "errors[].eventIndex",
+    "coverage",
+    "counts"
+  ],
+  "redactionSummary": [
+    {
+      "ruleId": "ansi",
+      "field": "errors[].message",
+      "count": 32
+    },
+    {
+      "ruleId": "absolute-path",
+      "field": "errors[].message",
+      "count": 2
+    }
+  ],
+  "omissionSummary": [
+    {
+      "category": "arguments-and-results",
+      "eventCount": 41,
+      "entryCount": 0,
+      "resourceReferenceCount": 0,
+      "reason": "excluded-by-minimal-v1"
+    },
+    {
+      "category": "test-and-step-titles",
+      "eventCount": 20,
+      "entryCount": 0,
+      "resourceReferenceCount": 0,
+      "reason": "excluded-by-minimal-v1"
+    },
+    {
+      "category": "console-and-stdio",
+      "eventCount": 1,
+      "entryCount": 0,
+      "resourceReferenceCount": 0,
+      "reason": "excluded-by-minimal-v1"
+    },
+    {
+      "category": "dom-and-aria",
+      "eventCount": 2,
+      "entryCount": 0,
+      "resourceReferenceCount": 0,
+      "reason": "excluded-by-minimal-v1"
+    },
+    {
+      "category": "images-and-video",
+      "eventCount": 0,
+      "entryCount": 0,
+      "resourceReferenceCount": 0,
+      "reason": "excluded-by-minimal-v1"
+    },
+    {
+      "category": "network",
+      "eventCount": 0,
+      "entryCount": 2,
+      "resourceReferenceCount": 0,
+      "reason": "excluded-by-minimal-v1"
+    },
+    {
+      "category": "cookies-and-storage",
+      "eventCount": 0,
+      "entryCount": 0,
+      "resourceReferenceCount": 0,
+      "reason": "excluded-by-minimal-v1"
+    },
+    {
+      "category": "source-and-stacks",
+      "eventCount": 21,
+      "entryCount": 3,
+      "resourceReferenceCount": 0,
+      "reason": "excluded-by-minimal-v1"
+    },
+    {
+      "category": "attachments",
+      "eventCount": 1,
+      "entryCount": 1,
+      "resourceReferenceCount": 1,
+      "reason": "excluded-by-minimal-v1"
+    },
+    {
+      "category": "arbitrary-resources",
+      "eventCount": 0,
+      "entryCount": 0,
+      "resourceReferenceCount": 0,
+      "reason": "excluded-by-minimal-v1"
+    }
+  ],
+  "unsupportedStructures": [],
+  "outputArtifacts": [
+    {
+      "name": "report.json",
+      "sha256": "d3a7f7bd0461bf4d3fa53512b2f57bfa5e477406d9989ff8fbadcea9c3a2c613",
+      "bytes": 11612
+    },
+    {
+      "name": "report.html",
+      "sha256": "3e8310e316fcfe5599f4573823742f60907365caeb16d13ec37a36bed235aa53",
+      "bytes": 32808
+    }
+  ]
+}

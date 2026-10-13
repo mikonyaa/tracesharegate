@@ -1,5 +1,7 @@
 # Verified 0.1.0 publication
 
+Historical policy 1 record. This does not verify the local 0.1.1 candidate, and the known matcher-value gap remains in immutable old artifacts. No new publication is claimed.
+
 - Repository: https://github.com/mikonyaa/tracesharegate (ID 1416146616).
 - Release: https://github.com/mikonyaa/tracesharegate/releases/tag/v0.1.0.
 - Release source commit: `9c88a2be964a772c9cf8666b0ac4ac4d44476fd3`.

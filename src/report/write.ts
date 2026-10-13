@@ -2,7 +2,7 @@ import { mkdir, writeFile, rename, lstat, rm, rmdir } from "node:fs/promises";
 import path from "node:path";
 import { randomBytes } from "node:crypto";
 import { GateError, check, LIMITS } from "../limits/index.js";
-import { hash } from "../policy/index.js";
+import { hash, POLICY, POLICY_HASH } from "../policy/index.js";
 import { Redactor } from "../redaction/index.js";
 import { validateReport, validateManifest } from "../schemas/index.js";
 import { render } from "./render.js";
@@ -14,6 +14,14 @@ export async function writeReport(
   literals: string[],
 ): Promise<void> {
   validateReport(report);
+  const redactor = new Redactor(literals);
+  if (
+    report.policy.id === POLICY.id &&
+    report.policy.version === POLICY.version &&
+    report.policy.fingerprint === POLICY_HASH
+  )
+    for (const error of report.errors)
+      redactor.assertErrorContext(error.message);
   const json = JSON.stringify(report, null, 2) + "\n";
   const html = await render(report, manifest);
   manifest.outputArtifacts = [
@@ -22,7 +30,6 @@ export async function writeReport(
   ];
   validateManifest(manifest);
   const manifestText = JSON.stringify(manifest, null, 2) + "\n";
-  const redactor = new Redactor(literals);
   for (const text of [json, html, manifestText]) {
     check(Buffer.byteLength(text) <= LIMITS.outputBytes, "output-byte-limit");
     redactor.assertLiterals(text);

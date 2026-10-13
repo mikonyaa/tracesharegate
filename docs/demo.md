@@ -17,7 +17,7 @@ No prerecorded action list is supplied to the parser or viewer.
    ![Actual CLI command and captured output](demo/command.png)
 
 3. **10–20 seconds:** open the reduced report, inspect the failed Assertion and
-   sanitized explanation. The known selector, expected/received values and original
+   retained explanation. The known selector, expected/received values and original
    user-authored title are absent. Search/filter/copy use the retained data.
 
    ![Actual reduced report](demo/report-1440.png)
@@ -32,3 +32,5 @@ No prerecorded action list is supplied to the parser or viewer.
 Reproduce with the installed Release CLI: `tracesharegate demo --out demo-output`.
 The raw original stays unchanged. For deeper private debugging, open it separately
 with Playwright's genuine Trace Viewer.
+
+These screenshots are historical policy 1 evidence. Current policy 2 locator error bodies are excluded with incomplete coverage; review new local outputs for candidate behavior.

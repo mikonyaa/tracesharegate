@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-GGssNf10GvLXUBbxnq9y43DaP2ZOFYIm7JJbkgA008c='; style-src 'sha256-vWtyP1TsqeFcUVfeuKNAozmug3lKdwd9K6npU2Omln4='; img-src 'none'; connect-src 'none'; font-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'" />
+    <title>TraceShareGate · Review report</title>
+    <style>
+      :root {
+  --paper: #f5f3ed;
+  --surface: #fffefa;
+  --ink: #252b2d;
+  --muted: #5a6467;
+  --line: #d7d8d1;
+  --accent: #b54324;
+  --warning: #76581b;
+  --warm: #f5e6c6;
+  --focus: #1b6278;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font:
+    14px/1.55 "Helvetica Neue",
+    Helvetica,
+    sans-serif;
+}
+header {
+  padding: 28px 36px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.brand {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.mark {
+  font:
+    700 22px/1.1 "Courier New",
+    monospace;
+  border-left: 4px solid var(--accent);
+  padding: 12px;
+  color: var(--accent);
+}
+h1 {
+  margin: 0;
+  font:
+    600 25px/1.3 "Helvetica Neue",
+    sans-serif;
+  letter-spacing: -1px;
+}
+header p {
+  margin: 4px 0 0;
+  color: var(--muted);
+}
+.version {
+  font:
+    12px "Courier New",
+    monospace;
+  text-align: right;
+}
+.version span {
+  display: block;
+  color: var(--muted);
+  margin-top: 8px;
+}
+#banner {
+  margin: 18px 36px 0;
+  padding: 14px 18px;
+  background: var(--warm);
+  border-left: 4px solid var(--warning);
+  color: var(--ink);
+}
+#banner strong {
+  margin-right: 12px;
+}
+main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(320px, 1fr);
+  margin: 24px 36px 40px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+.timeline-panel {
+  border-right: 1px solid var(--line);
+  min-width: 0;
+}
+.section-label {
+  font:
+    12px "Courier New",
+    monospace;
+  letter-spacing: 0.06em;
+  padding: 17px 20px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+.filters {
+  padding: 16px 20px;
+  display: grid;
+  grid-template-columns: 1fr 120px 140px;
+  gap: 10px;
+  border-bottom: 1px solid var(--line);
+}
+label {
+  font-size: 11px;
+  color: var(--muted);
+}
+input,
+select {
+  display: block;
+  width: 100%;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  padding: 9px;
+  margin-top: 4px;
+  border-radius: 0;
+  font:
+    13px "Helvetica Neue",
+    sans-serif;
+}
+#timeline {
+  max-height: 860px;
+  overflow: auto;
+}
+.lane {
+  position: sticky;
+  top: 0;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+  padding: 10px 20px;
+  font:
+    11px "Courier New",
+    monospace;
+  color: var(--muted);
+  z-index: 1;
+}
+.action {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 70px minmax(0, 1fr) 92px;
+  gap: 12px;
+  text-align: left;
+  padding: 16px 20px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+  font:
+    14px/1.4 "Helvetica Neue",
+    sans-serif;
+}
+.action.selected {
+  background: var(--paper);
+  box-shadow: inset 4px 0 var(--focus);
+}
+.action small {
+  display: block;
+  color: var(--muted);
+  font:
+    11px/1.5 "Courier New",
+    monospace;
+  margin-top: 5px;
+}
+.action .time {
+  color: var(--muted);
+  font:
+    11px/1.5 "Courier New",
+    monospace;
+}
+.status {
+  font:
+    11px/1.6 "Courier New",
+    monospace;
+  text-transform: uppercase;
+}
+.failed {
+  color: var(--accent);
+}
+.incomplete,
+.unknown {
+  color: var(--warning);
+}
+.error-preview {
+  font-size: 12px;
+  color: var(--muted);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 54px;
+  overflow: hidden;
+}
+aside {
+  min-width: 0;
+}
+#details {
+  padding: 24px 24px 8px;
+  min-height: 210px;
+}
+h2 {
+  font-size: 20px;
+  letter-spacing: -0.5px;
+  margin: 0 0 14px;
+}
+dl {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 8px;
+  margin: 0 0 20px;
+}
+dt {
+  color: var(--muted);
+  font-size: 12px;
+}
+dd {
+  margin: 0;
+  font:
+    12px/1.5 "Courier New",
+    monospace;
+  overflow-wrap: anywhere;
+}
+pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  background: var(--paper);
+  padding: 16px;
+  border-left: 2px solid var(--line);
+  font:
+    12px/1.6 "Courier New",
+    monospace;
+  margin: 12px 0;
+}
+.detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 8px 24px;
+}
+button,
+a {
+  color: var(--ink);
+}
+.detail-actions button,
+.detail-actions a {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  padding: 9px 12px;
+  font:
+    12px "Helvetica Neue",
+    sans-serif;
+  cursor: pointer;
+  text-decoration: none;
+}
+#copy-status {
+  margin: 0 24px 16px;
+  font-size: 12px;
+  color: var(--muted);
+}
+details {
+  border-top: 1px solid var(--line);
+  padding: 16px 24px;
+}
+summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+details p {
+  font-size: 12px;
+  overflow-wrap: anywhere;
+  margin: 10px 0;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  font-size: 12px;
+}
+td,
+th {
+  padding: 6px 0;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+td:last-child,
+th:last-child {
+  text-align: right;
+  padding-left: 12px;
+}
+.reminder {
+  border-top: 1px solid var(--line);
+  padding: 20px 24px;
+  background: var(--warm);
+  font-size: 12px;
+}
+.reminder p {
+  margin-bottom: 0;
+}
+footer {
+  padding: 0 36px 28px;
+  color: var(--muted);
+  font:
+    11px/1.5 "Courier New",
+    monospace;
+}
+.empty {
+  padding: 32px 20px;
+  color: var(--muted);
+}
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+@media (max-width: 1100px) {
+  .filters {
+    grid-template-columns: 1fr 1fr;
+  }
+  .search {
+    grid-column: 1/-1;
+  }
+  main {
+    grid-template-columns: minmax(0, 1.1fr) minmax(320px, 1fr);
+  }
+}
+@media (max-width: 700px) {
+  header {
+    padding: 20px;
+    align-items: flex-start;
+  }
+  .brand {
+    gap: 12px;
+  }
+  .mark {
+    font-size: 17px;
+    padding: 8px;
+  }
+  h1 {
+    font-size: 21px;
+  }
+  .version {
+    display: none;
+  }
+  header p {
+    font-size: 12px;
+  }
+  #banner {
+    margin: 16px 16px 0;
+    font-size: 12px;
+  }
+  main {
+    display: block;
+    margin: 16px;
+  }
+  .timeline-panel {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  #timeline {
+    max-height: 430px;
+  }
+  .action {
+    padding: 14px 16px;
+    grid-template-columns: 54px minmax(0, 1fr) 78px;
+    gap: 8px;
+  }
+  .section-label {
+    padding: 16px;
+  }
+  .filters {
+    padding: 16px;
+  }
+  #details {
+    padding: 20px 16px 8px;
+  }
+  details,
+  .reminder {
+    padding: 16px;
+  }
+  .detail-actions {
+    padding: 8px 16px;
+  }
+  footer {
+    padding: 0 16px 24px;
+  }
+}
+
+.manifest-note {
+  margin: 0 24px 16px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <span class="mark">T / G</span>
+        <div>
+          <h1>TraceShareGate</h1>
+          <p>A smaller debugging artifact. Review it before sharing.</p>
+        </div>
+      </div>
+      <div class="version">minimal-v1 <span>derived report</span></div>
+    </header>
+    <div id="banner" role="status"></div>
+    <main>
+      <section class="timeline-panel" aria-label="Action timeline">
+        <div class="section-label">
+          01 / ACTION TIMELINE <span id="action-count"></span>
+        </div>
+        <div class="filters">
+          <label class="search"
+            >Search retained text<input
+              id="search"
+              type="search"
+              placeholder="Operation or sanitized error"
+              autocomplete="off" /></label
+          ><label
+            >Status<select id="status" aria-label="Status">
+              <option value="all">All statuses</option>
+              <option>failed</option>
+              <option>passed</option>
+              <option>incomplete</option>
+              <option>unknown</option>
+            </select></label
+          ><label
+            >Type<select id="kind" aria-label="Type">
+              <option value="all">Actions + errors</option>
+              <option value="actions">Actions</option>
+              <option value="errors">Errors</option>
+            </select></label
+          >
+        </div>
+        <div
+          id="timeline"
+          tabindex="0"
+          aria-label="Timeline entries; use arrow keys to navigate"
+        ></div>
+      </section>
+      <aside>
+        <div class="section-label">02 / RETAINED DETAILS</div>
+        <section id="details" aria-live="polite"></section>
+        <div class="detail-actions">
+          <button id="copy">Copy sanitized text</button
+          ><button id="download">Download omission manifest</button>
+        </div>
+        <p id="copy-status" role="status"></p>
+        <p class="manifest-note">
+          The embedded omission snapshot includes the JSON hash. Final JSON and
+          HTML hashes are in the sibling manifest.json.
+        </p>
+        <details open>
+          <summary>Processing coverage</summary>
+          <div id="coverage"></div>
+        </details>
+        <details>
+          <summary>Retained fields</summary>
+          <div id="retained"></div>
+        </details>
+        <details open>
+          <summary>Omissions</summary>
+          <div id="omissions"></div>
+        </details>
+        <section class="reminder">
+          <strong>Review reminder</strong>
+          <p>
+            Read every retained error. Unknown sensitive text may remain.
+            Reduction is not a privacy certificate.
+          </p>
+          <p>
+            Excluded images were not OCR scanned. Use the original trace
+            privately for full context.
+          </p>
+        </section>
+      </aside>
+    </main>
+    <footer>
+      Local artifact · No uploads · Stream clocks stay separate · Original trace
+      unchanged
+    </footer>
+    <script id="report-data" type="application/json">
+      {"report":{"schemaVersion":1,"tool":{"name":"tracesharegate","version":"0.1.0"},"adapter":{"id":"playwright-1.63.0-v9","version":"1","playwright":"1.63.0","traceVersion":9,"sourceCommit":"1b025d7e20a026371cd5f98ba0cdce48892737c8"},"input":{"sha256":"1c49ada40658d6bbc98abc735a5e464ff983c1c34042e81ae6b927486e9b7316","bytes":5621},"policy":{"id":"minimal-v1","version":1,"fingerprint":"9d39ec57f6893725f9bb62187d7d525ec4c52e8ae752797313b7e8593b383108"},"processingStatus":"complete","needsReview":true,"coverage":{"archiveInventory":"complete","recognizedSchema":"complete","processedRetainedFields":"complete","patternMatching":"bounded-built-ins","literalCheck":"not-performed","events":48,"streams":3,"assertionScope":"runner-observations","issues":[]},"contexts":[{"id":"context-1","lane":"lane-1","origin":"runner","clock":"stream-relative","assertionObservations":"recorded"},{"id":"context-2","lane":"lane-2","origin":"browser","clock":"stream-relative","assertionObservations":"out-of-scope"},{"id":"context-3","lane":"lane-3","origin":"browser","clock":"stream-relative","assertionObservations":"out-of-scope"}],"actions":[{"id":"action-1","contextId":"context-1","lane":"lane-1","operation":"Test hook","operationKnown":true,"startMs":0,"endMs":2485.013,"durationMs":2485.013,"outcome":"passed","parentId":null,"errorIds":[],"eventIndex":2},{"id":"action-2","contextId":"context-1","lane":"lane-1","operation":"Test hook","operationKnown":true,"startMs":0.184,"endMs":2484.89,"durationMs":2484.706,"outcome":"passed","parentId":"action-1","errorIds":[],"eventIndex":3},{"id":"action-3","contextId":"context-1","lane":"lane-1","operation":"Test fixture","operationKnown":true,"startMs":7.956,"endMs":2399.326,"durationMs":2391.37,"outcome":"passed","parentId":"action-2","errorIds":[],"eventIndex":4},{"id":"action-4","contextId":"context-1","lane":"lane-1","operation":"Browser API step","operationKnown":true,"startMs":9.905,"endMs":2399.278,"durationMs":2389.373,"outcome":"passed","parentId":"action-3","errorIds":[],"eventIndex":5},{"id":"action-5","contextId":"context-1","lane":"lane-1","operation":"Test fixture","operationKnown":true,"startMs":2399.854,"endMs":2410.244,"durationMs":10.39,"outcome":"passed","parentId":"action-2","errorIds":[],"eventIndex":8},{"id":"action-6","contextId":"context-1","lane":"lane-1","operation":"Browser API step","operationKnown":true,"startMs":2400.657,"endMs":2405.814,"durationMs":5.157,"outcome":"passed","parentId":"action-5","errorIds":[],"eventIndex":9},{"id":"action-7","contextId":"context-1","lane":"lane-1","operation":"Test fixture","operationKnown":true,"startMs":2410.51,"endMs":2467.534,"durationMs":57.024,"outcome":"passed","parentId":"action-2","errorIds":[],"eventIndex":12},{"id":"action-8","contextId":"context-1","lane":"lane-1","operation":"Browser API step","operationKnown":true,"startMs":2412.02,"endMs":2467.514,"durationMs":55.494,"outcome":"passed","parentId":"action-7","errorIds":[],"eventIndex":13},{"id":"action-9","contextId":"context-1","lane":"lane-1","operation":"Browser API step","operationKnown":true,"startMs":2468.099,"endMs":2484.802,"durationMs":16.703,"outcome":"passed","parentId":"action-2","errorIds":[],"eventIndex":16},{"id":"action-10","contextId":"context-1","lane":"lane-1","operation":"Assertion","operationKnown":true,"startMs":2486.451,"endMs":2487.09,"durationMs":0.639,"outcome":"failed","parentId":null,"errorIds":["error-1"],"eventIndex":20},{"id":"action-11","contextId":"context-1","lane":"lane-1","operation":"Test hook","operationKnown":true,"startMs":2487.269,"endMs":2518.139,"durationMs":30.87,"outcome":"passed","parentId":null,"errorIds":[],"eventIndex":23},{"id":"action-12","contextId":"context-1","lane":"lane-1","operation":"Test fixture","operationKnown":true,"startMs":2487.714,"endMs":2487.783,"durationMs":0.069,"outcome":"passed","parentId":"action-11","errorIds":[],"eventIndex":24},{"id":"action-13","contextId":"context-1","lane":"lane-1","operation":"Test fixture","operationKnown":true,"startMs":2487.866,"endMs":2512.675,"durationMs":24.809,"outcome":"passed","parentId":"action-11","errorIds":[],"eventIndex":26},{"id":"action-14","contextId":"context-1","lane":"lane-1","operation":"Browser API step","operationKnown":true,"startMs":2509.13,"endMs":2512.654,"durationMs":3.524,"outcome":"passed","parentId":"action-13","errorIds":[],"eventIndex":27},{"id":"action-15","contextId":"context-1","lane":"lane-1","operation":"Attach data","operationKnown":true,"startMs":2515.171,"endMs":2515.181,"durationMs":0.01,"outcome":"passed","parentId":null,"errorIds":[],"eventIndex":30},{"id":"action-16","contextId":"context-1","lane":"lane-1","operation":"Test hook","operationKnown":true,"startMs":2518.194,"endMs":2532.07,"durationMs":13.876,"outcome":"passed","parentId":null,"errorIds":[],"eventIndex":33},{"id":"action-17","contextId":"context-1","lane":"lane-1","operation":"Test fixture","operationKnown":true,"startMs":2518.46,"endMs":2531.522,"durationMs":13.062,"outcome":"passed","parentId":"action-16","errorIds":[],"eventIndex":34},{"id":"action-18","contextId":"context-1","lane":"lane-1","operation":"Test fixture","operationKnown":true,"startMs":2532.01,"endMs":2532.016,"durationMs":0.006,"outcome":"passed","parentId":"action-16","errorIds":[],"eventIndex":36},{"id":"action-19","contextId":"context-2","lane":"lane-2","operation":"Create page","operationKnown":true,"startMs":0,"endMs":54.515,"durationMs":54.515,"outcome":"passed","parentId":null,"errorIds":[],"eventIndex":2},{"id":"action-20","contextId":"context-2","lane":"lane-2","operation":"Navigate","operationKnown":true,"startMs":55.946,"endMs":68.697,"durationMs":12.751,"outcome":"passed","parentId":null,"errorIds":[],"eventIndex":5}],"errors":[{"id":"error-1","contextId":"context-1","actionId":"action-10","name":"","message":"Error: expect(received).toContain(expected) [PATH OMITTED] indexOf\n\nExpected substring: \"PERSON_EXPECTED_NORAH_1642\"\nReceived string:    \"PERSON_ACTUAL_OTTO_8391\"","timeMs":2487.09,"eventIndex":21},{"id":"error-2","contextId":"context-1","actionId":null,"name":null,"message":"Error: expect(received).toContain(expected) [PATH OMITTED] indexOf\n\nExpected substring: \"PERSON_EXPECTED_NORAH_1642\"\nReceived string:    \"PERSON_ACTUAL_OTTO_8391\"","timeMs":null,"eventIndex":22}],"redactionSummary":[{"ruleId":"ansi","field":"errors[].message","count":32},{"ruleId":"absolute-path","field":"errors[].message","count":2}],"omissionSummary":[{"category":"arguments-and-results","eventCount":41,"entryCount":0,"resourceReferenceCount":0,"reason":"excluded-by-minimal-v1"},{"category":"test-and-step-titles","eventCount":20,"entryCount":0,"resourceReferenceCount":0,"reason":"excluded-by-minimal-v1"},{"category":"console-and-stdio","eventCount":1,"entryCount":0,"resourceReferenceCount":0,"reason":"excluded-by-minimal-v1"},{"category":"dom-and-aria","eventCount":2,"entryCount":0,"resourceReferenceCount":0,"reason":"excluded-by-minimal-v1"},{"category":"images-and-video","eventCount":0,"entryCount":0,"resourceReferenceCount":0,"reason":"excluded-by-minimal-v1"},{"category":"network","eventCount":0,"entryCount":2,"resourceReferenceCount":0,"reason":"excluded-by-minimal-v1"},{"category":"cookies-and-storage","eventCount":0,"entryCount":0,"resourceReferenceCount":0,"reason":"excluded-by-minimal-v1"},{"category":"source-and-stacks","eventCount":21,"entryCount":3,"resourceReferenceCount":0,"reason":"excluded-by-minimal-v1"},{"category":"attachments","eventCount":1,"entryCount":1,"resourceReferenceCount":1,"reason":"excluded-by-minimal-v1"},{"category":"arbitrary-resources","eventCount":0,"entryCount":0,"resourceReferenceCount":0,"reason":"excluded-by-minimal-v1"}],"limitations":["Review every retained error before sharing. Unknown sensitive text may remain.","This is a derived report, not a replay trace or a privacy certificate.","Omitted images are excluded without OCR or content inspection.","Clocks are local to each stream; lanes are not globally synchronized.","Browser-only traces do not establish assertion outcomes.","Literal variants checked: exact, JSON escaping, URI encoding and NFC. Other encodings are outside scope.","Opaque excluded containers are bounded but their arbitrary payload keys are not interpreted.","Archive entry sizes are declared; actual bytes are measured only for processed streams."]},"entries":[{"id":"entry-1","category":"source-and-stacks","disposition":"omitted","reason":"excluded-by-policy","declaredCompressedBytes":507,"declaredUncompressedBytes":1189,"actualProcessedBytes":null,"contentsInspected":false,"retainedFieldPaths":[]},{"id":"entry-2","category":"attachments","disposition":"omitted","reason":"excluded-by-policy","declaredCompressedBytes":843,"declaredUncompressedBytes":1980,"actualProcessedBytes":null,"contentsInspected":false,"retainedFieldPaths":[]},{"id":"entry-3","category":"trace-stream","disposition":"retained-derived","reason":"allowlisted-derived-fields","declaredCompressedBytes":1382,"declaredUncompressedBytes":6851,"actualProcessedBytes":6851,"contentsInspected":true,"retainedFieldPaths":["contexts[]","actions[]","errors[]"]},{"id":"entry-4","category":"trace-stream","disposition":"retained-derived","reason":"allowlisted-derived-fields","declaredCompressedBytes":1038,"declaredUncompressedBytes":2551,"actualProcessedBytes":2551,"contentsInspected":true,"retainedFieldPaths":["contexts[]","actions[]","errors[]"]},{"id":"entry-5","category":"network-stream","disposition":"omitted","reason":"excluded-by-policy","declaredCompressedBytes":2,"declaredUncompressedBytes":0,"actualProcessedBytes":0,"contentsInspected":true,"retainedFieldPaths":[]},{"id":"entry-6","category":"source-and-stacks","disposition":"omitted","reason":"excluded-by-policy","declaredCompressedBytes":132,"declaredUncompressedBytes":147,"actualProcessedBytes":null,"contentsInspected":false,"retainedFieldPaths":[]},{"id":"entry-7","category":"trace-stream","disposition":"retained-derived","reason":"allowlisted-derived-fields","declaredCompressedBytes":266,"declaredUncompressedBytes":359,"actualProcessedBytes":359,"contentsInspected":true,"retainedFieldPaths":["contexts[]","actions[]","errors[]"]},{"id":"entry-8","category":"network-stream","disposition":"omitted","reason":"excluded-by-policy","declaredCompressedBytes":2,"declaredUncompressedBytes":0,"actualProcessedBytes":0,"contentsInspected":true,"retainedFieldPaths":[]},{"id":"entry-9","category":"source-and-stacks","disposition":"omitted","reason":"excluded-by-policy","declaredCompressedBytes":132,"declaredUncompressedBytes":147,"actualProcessedBytes":null,"contentsInspected":false,"retainedFieldPaths":[]}],"omissionManifest":{"schemaVersion":1,"tool":{"name":"tracesharegate","version":"0.1.0"},"parser":{"id":"playwright-1.63.0-v9","version":"1","playwright":"1.63.0","traceVersion":9,"sourceCommit":"1b025d7e20a026371cd5f98ba0cdce48892737c8"},"input":{"sha256":"1c49ada40658d6bbc98abc735a5e464ff983c1c34042e81ae6b927486e9b7316","bytes":5621},"policy":{"id":"minimal-v1","version":1,"fingerprint":"9d39ec57f6893725f9bb62187d7d525ec4c52e8ae752797313b7e8593b383108"},"processingStatus":"complete","needsReview":true,"coverage":{"archiveInventory":"complete","recognizedSchema":"complete","processedRetainedFields":"complete","patternMatching":"bounded-built-ins","literalCheck":"not-performed","events":48,"streams":3,"assertionScope":"runner-observations","issues":[]},"entries":[{"id":"entry-1","category":"source-and-stacks","disposition":"omitted","reason":"excluded-by-policy","declaredCompressedBytes":507,"declaredUncompressedBytes":1189,"actualProcessedBytes":null,"contentsInspected":false,"retainedFieldPaths":[]},{"id":"entry-2","category":"attachments","disposition":"omitted","reason":"excluded-by-policy","declaredCompressedBytes":843,"declaredUncompressedBytes":1980,"actualProcessedBytes":null,"contentsInspected":false,"retainedFieldPaths":[]},{"id":"entry-3","category":"trace-stream","disposition":"retained-derived","reason":"allowlisted-derived-fields","declaredCompressedBytes":1382,"declaredUncompressedBytes":6851,"actualProcessedBytes":6851,"contentsInspected":true,"retainedFieldPaths":["contexts[]","actions[]","errors[]"]},{"id":"entry-4","category":"trace-stream","disposition":"retained-derived","reason":"allowlisted-derived-fields","declaredCompressedBytes":1038,"declaredUncompressedBytes":2551,"actualProcessedBytes":2551,"contentsInspected":true,"retainedFieldPaths":["contexts[]","actions[]","errors[]"]},{"id":"entry-5","category":"network-stream","disposition":"omitted","reason":"excluded-by-policy","declaredCompressedBytes":2,"declaredUncompressedBytes":0,"actualProcessedBytes":0,"contentsInspected":true,"retainedFieldPaths":[]},{"id":"entry-6","category":"source-and-stacks","disposition":"omitted","reason":"excluded-by-policy","declaredCompressedBytes":132,"declaredUncompressedBytes":147,"actualProcessedBytes":null,"contentsInspected":false,"retainedFieldPaths":[]},{"id":"entry-7","category":"trace-stream","disposition":"retained-derived","reason":"allowlisted-derived-fields","declaredCompressedBytes":266,"declaredUncompressedBytes":359,"actualProcessedBytes":359,"contentsInspected":true,"retainedFieldPaths":["contexts[]","actions[]","errors[]"]},{"id":"entry-8","category":"network-stream","disposition":"omitted","reason":"excluded-by-policy","declaredCompressedBytes":2,"declaredUncompressedBytes":0,"actualProcessedBytes":0,"contentsInspected":true,"retainedFieldPaths":[]},{"id":"entry-9","category":"source-and-stacks","disposition":"omitted","reason":"excluded-by-policy","declaredCompressedBytes":132,"declaredUncompressedBytes":147,"actualProcessedBytes":null,"contentsInspected":false,"retainedFieldPaths":[]}],"resources":[{"entryId":"entry-2","category":"attachments","references":1}],"retainedFieldPaths":["contexts[].id","contexts[].lane","contexts[].origin","actions[].id","actions[].contextId","actions[].operation","actions[].startMs","actions[].endMs","actions[].durationMs","actions[].outcome","actions[].parentId","actions[].errorIds","errors[].message","errors[].name","errors[].eventIndex","coverage","counts"],"redactionSummary":[{"ruleId":"ansi","field":"errors[].message","count":32},{"ruleId":"absolute-path","field":"errors[].message","count":2}],"omissionSummary":[{"category":"arguments-and-results","eventCount":41,"entryCount":0,"resourceReferenceCount":0,"reason":"excluded-by-minimal-v1"},{"category":"test-and-step-titles","eventCount":20,"entryCount":0,"resourceReferenceCount":0,"reason":"excluded-by-minimal-v1"},{"category":"console-and-stdio","eventCount":1,"entryCount":0,"resourceReferenceCount":0,"reason":"excluded-by-minimal-v1"},{"category":"dom-and-aria","eventCount":2,"entryCount":0,"resourceReferenceCount":0,"reason":"excluded-by-minimal-v1"},{"category":"images-and-video","eventCount":0,"entryCount":0,"resourceReferenceCount":0,"reason":"excluded-by-minimal-v1"},{"category":"network","eventCount":0,"entryCount":2,"resourceReferenceCount":0,"reason":"excluded-by-minimal-v1"},{"category":"cookies-and-storage","eventCount":0,"entryCount":0,"resourceReferenceCount":0,"reason":"excluded-by-minimal-v1"},{"category":"source-and-stacks","eventCount":21,"entryCount":3,"resourceReferenceCount":0,"reason":"excluded-by-minimal-v1"},{"category":"attachments","eventCount":1,"entryCount":1,"resourceReferenceCount":1,"reason":"excluded-by-minimal-v1"},{"category":"arbitrary-resources","eventCount":0,"entryCount":0,"resourceReferenceCount":0,"reason":"excluded-by-minimal-v1"}],"unsupportedStructures":[],"outputArtifacts":[{"name":"report.json","sha256":"d3a7f7bd0461bf4d3fa53512b2f57bfa5e477406d9989ff8fbadcea9c3a2c613","bytes":11612}]}}
+    </script>
+    <script>
+      "use strict";(()=>{var r=e=>document.getElementById(e),n=(e,s,a)=>{let i=document.createElement(e);return s!==void 0&&(i.textContent=s),a&&(i.className=a),i},w=JSON.parse(r("report-data").textContent??"{}"),d=w.report,L=r("banner");L.append(n("strong",d.processingStatus==="complete"?"Reduction complete \xB7 review required":d.processingStatus.toUpperCase()+" COVERAGE \xB7 review required"));L.append(document.createTextNode(d.processingStatus==="complete"?"Selected schema fields were processed. This does not establish absence of sensitive data.":d.coverage.issues.map(e=>e.code+" ("+e.count+")").join(" \xB7 ")));r("action-count").textContent=d.actions.length+" actions";r("coverage").append(n("p","Archive inventory: "+d.coverage.archiveInventory),n("p","Recognized schema: "+d.coverage.recognizedSchema),n("p","Retained fields: "+d.coverage.processedRetainedFields),n("p","Assertion scope: "+d.coverage.assertionScope),n("p","Known literals: "+d.coverage.literalCheck),n("p","Built-in patterns: bounded matching"),n("p","Lanes use independent relative clocks. Errors without a time show their original event index."));for(let e of d.coverage.issues)r("coverage").append(n("p",e.code+" \xB7 "+(e.entryId??"archive")+" \xB7 "+e.count));r("retained").append(n("p","Generated IDs; known operations; relative timing; verified parents; outcomes; bounded redacted errors; counts and coverage."));for(let e of d.redactionSummary)r("retained").append(n("p",e.ruleId+" \xB7 "+e.field+" \xB7 "+e.count+" replacements"));var M=n("table"),k=n("tr");k.append(n("th","Excluded category"),n("th","Events / entries / references"));M.append(k);for(let e of d.omissionSummary){let s=n("tr");s.append(n("td",e.category.replaceAll("-"," ")),n("td",`${e.eventCount} / ${e.entryCount} / ${e.resourceReferenceCount}`)),M.append(s)}r("omissions").append(M,n("p","References count uses, not unique bytes. Physical entries are counted once. Payload entries omitted without decompression have contentsInspected=false; their sizes are declared, not measured. Zero means no separately counted envelope; excluded opaque containers may still contain that surface."),n("p",w.entries.filter(e=>!e.contentsInspected).length+" entries excluded without content inspection."));var C=new Map(d.errors.map(e=>[e.id,e])),y=[...d.actions.map(e=>({action:e,contextId:e.contextId,index:e.eventIndex,status:e.outcome,label:e.operation,text:e.errorIds.map(s=>C.get(s)?.message??"").join(`
+`)})),...d.errors.filter(e=>!e.actionId).map(e=>({error:e,contextId:e.contextId,index:e.eventIndex,status:"unknown",label:"Observed error",text:e.message??""}))],h=y.find(e=>e.action?.operation==="Assertion"&&e.status==="failed")??y.find(e=>e.status==="failed")??y[0],u=0,v="",l=[],b=[],x=100,g=(e,s,a)=>{e.append(n("dt",s),n("dd",a))};function E(e,s=!1){h=e;let a=r("details");a.replaceChildren(n("h2",e.label));let i=n("dl");if(g(i,"Status",e.error?"observed error":e.status),g(i,"Lane",e.action?.lane??d.contexts.find(t=>t.id===e.contextId)?.lane??"unknown"),g(i,"Local ID",e.action?.id??e.error?.id??"unknown"),g(i,"Event index",String(e.index)),e.action){let t=e.action;g(i,"Relative start",t.startMs===null?"unknown":t.startMs+" ms"),g(i,"Duration",t.durationMs===null?"unknown":t.durationMs+" ms"),g(i,"Parent",t.parentId??"No verified parent")}else g(i,"Time",e.error?.timeMs===null?"Not recorded":e.error?.timeMs+" ms");a.append(i);let p=e.action?e.action.errorIds.map(t=>C.get(t)).filter(Boolean):e.error?[e.error]:[];for(let t of p)a.append(n("strong",t.name||"Observed error"),n("pre",t.message??"Error text excluded by the string policy."));p.length||a.append(n("p","No retained error for this operation.")),v=[e.label,...Array.from(i.children).map(t=>t.textContent),...p.map(t=>t.message??"Error text excluded")].join(`
+`),b.forEach((t,m)=>{let o=l[m]===e;if(t.classList.toggle("selected",o),t.setAttribute("aria-pressed",String(o)),o){let c=r("timeline"),f=t.getBoundingClientRect().top-c.getBoundingClientRect().top+c.scrollTop;f<c.scrollTop+38?c.scrollTop=Math.max(0,f-38):f+t.offsetHeight>c.scrollTop+c.clientHeight&&(c.scrollTop=f+t.offsetHeight-c.clientHeight),s&&t.focus()}})}function I(){let e=r("search").value.toLocaleLowerCase(),s=r("status").value,a=r("kind").value,i=y.filter(t=>(s==="all"||s===t.status)&&(a==="all"||a==="actions"&&t.action||a==="errors"&&(t.error||t.action?.errorIds.length))&&[t.label,t.text,t.action?.id??t.error?.id??""].join(" ").toLocaleLowerCase().includes(e));u=Math.min(u,Math.max(0,Math.ceil(i.length/x)-1)),l=i.slice(u*x,(u+1)*x);let p=r("timeline");p.replaceChildren(),b=[];for(let t of d.contexts){let m=l.filter(o=>o.contextId===t.id);if(m.length){p.append(n("div",t.lane+" / "+t.origin+" / separate clock","lane"));for(let o of m){let c=n("button",void 0,"action "+o.status);c.type="button",c.append(n("span",o.action?.startMs!==null&&o.action?.startMs!==void 0?o.action.startMs+" ms":"event "+o.index,"time"));let f=n("span",o.label);f.append(n("small",o.action?.id??o.error?.id)),o.text&&f.append(n("div",o.text,"error-preview")),c.append(f,n("span",o.error?"error":o.status,"status")),c.addEventListener("click",()=>E(o)),p.append(c),b.push(c)}}}if(l=d.contexts.flatMap(t=>l.filter(m=>m.contextId===t.id)),l.length||p.append(n("p","No matching retained events.","empty")),i.length>x){let t=n("div",`${i.length} matches \xB7 page ${u+1} of ${Math.ceil(i.length/x)}`,"empty");for(let[m,o]of[["Previous",-1],["Next",1]]){let c=n("button",m);c.disabled=u+o<0||(u+o)*x>=i.length,c.addEventListener("click",()=>{u+=o,I()}),t.append(c)}p.append(t)}h&&!l.includes(h)&&(h=l[0]),h?E(h):(r("details").replaceChildren(n("h2","No matching event"),n("p","Change the filters to inspect retained text.")),v="")}for(let e of["search","status","kind"])r(e).addEventListener("input",()=>{u=0,I()});r("timeline").addEventListener("keydown",e=>{if(!["ArrowDown","ArrowUp","Home","End"].includes(e.key)||!l.length)return;e.preventDefault();let s=h?l.indexOf(h):0,a=e.key==="Home"?0:e.key==="End"?l.length-1:Math.max(0,Math.min(l.length-1,s+(e.key==="ArrowDown"?1:-1)));E(l[a],!0)});r("copy").addEventListener("click",async()=>{if(!v){r("copy-status").textContent="No retained text selected.";return}try{await navigator.clipboard.writeText(v),r("copy-status").textContent="Sanitized text copied."}catch{let e=n("textarea");e.value=v,document.body.append(e),e.select();let s=document.execCommand("copy");e.remove(),r("copy-status").textContent=s?"Sanitized text copied.":"Copy unavailable. Select the retained text manually."}});I();r("download").addEventListener("click",()=>{let e=new Blob([JSON.stringify(w.omissionManifest,null,2)+`
+`],{type:"application/json"}),s=URL.createObjectURL(e),a=document.createElement("a");a.href=s,a.download="omission-manifest.json",document.body.append(a),a.click(),a.remove(),setTimeout(()=>URL.revokeObjectURL(s),1e3)});})();
+;
+    </script>
+  </body>
+</html>

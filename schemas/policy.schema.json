@@ -8,7 +8,7 @@
       "enum": ["minimal-v1"]
     },
     "version": {
-      "enum": [1]
+      "enum": [1, 2]
     },
     "retained": {
       "type": "array",
@@ -53,8 +53,17 @@
           "credential-assignment",
           "synthetic-canary",
           "ansi",
+          "bidi",
           "control",
           "error-context",
+          "error-assertion-values",
+          "error-diff",
+          "error-call-log",
+          "error-source-context",
+          "error-unknown-context",
+          "error-context-limit",
+          "error-custom-message",
+          "error-locator-context",
           "oversize-string"
         ]
       },
